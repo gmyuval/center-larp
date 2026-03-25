@@ -14,11 +14,12 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 COPY . /app
 
-RUN python manage.py collectstatic --noinput --settings=config.settings.production || true
-
 RUN adduser --disabled-password --gecos "" appuser \
     && chown -R appuser:appuser /app
 
 USER appuser
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8000/health/live/ || exit 1
+
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60"]

@@ -42,8 +42,8 @@ class Env:
             "HOST": parsed.hostname or "localhost",
             "PORT": parsed.port or 5432,
         }
-        if "sslmode" in options:
-            db["OPTIONS"] = {"sslmode": options["sslmode"][0]}
+        sslmode = options.get("sslmode", ["require"])[0]
+        db["OPTIONS"] = {"sslmode": sslmode}
         return db
 
     @staticmethod

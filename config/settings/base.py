@@ -49,6 +49,8 @@ TEMPLATES: list[dict[str, str | list[Path] | bool | dict[str, list[str]]]] = [
 ]
 
 # --- Database ---
+# Production DATABASE_URL must include ?sslmode=require for DigitalOcean managed PostgreSQL.
+# PostgreSQL connections default to sslmode=require if not specified in the URL.
 
 DATABASES = {
     "default": env.database_url(),
