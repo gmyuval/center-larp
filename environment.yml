@@ -8,3 +8,4 @@ dependencies:
   - pip-tools
   - pip:
     - pre-commit
+    - -r requirements.txt

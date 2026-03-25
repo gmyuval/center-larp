@@ -14,6 +14,8 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    env:
+      DJANGO_SECRET_KEY: lint-only-not-for-production
     steps:
       - uses: actions/checkout@v4
 
@@ -24,7 +26,10 @@ jobs:
           allow-prereleases: true
 
       - name: Install linters
-        run: pip install ruff==0.15.7 mypy==1.19.1
+        run: |
+          pip install ruff==0.15.7 mypy==1.19.1
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install 'django-stubs>=5'
 
       - name: Run ruff check
         run: ruff check .
@@ -54,7 +59,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      DATABASE_URL: postgresql://center_larp:test@localhost:5432/center_larp_test
+      DATABASE_URL: postgresql://center_larp:test@localhost:5432/center_larp_test?sslmode=disable
       DJANGO_SECRET_KEY: test-secret-key-not-for-production
       DJANGO_ALLOWED_HOSTS: localhost
       APP_BASE_URL: http://localhost:8000
@@ -75,7 +80,7 @@ jobs:
 
       - name: Run migrations
         run: |
-          if [ -f manage.py ]; then python manage.py migrate --check; fi
+          if [ -f manage.py ]; then python manage.py migrate; fi
 
       - name: Run tests
         run: |
