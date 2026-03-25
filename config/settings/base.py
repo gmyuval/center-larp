@@ -16,7 +16,7 @@ env = Env()
 
 # --- Core ---
 
-SECRET_KEY: str = env.get_str("DJANGO_SECRET_KEY")
+SECRET_KEY: str = env.require("DJANGO_SECRET_KEY")
 DEBUG: bool = env.get_bool("DJANGO_DEBUG")
 ALLOWED_HOSTS: list[str] = env.get_list("DJANGO_ALLOWED_HOSTS")
 CSRF_TRUSTED_ORIGINS: list[str] = env.get_list("CSRF_TRUSTED_ORIGINS")

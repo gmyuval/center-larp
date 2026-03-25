@@ -12,12 +12,24 @@ class Env:
         return os.environ.get(key, default)
 
     @staticmethod
+    def require(key: str) -> str:
+        """Get a required environment variable, raising if unset or empty."""
+        val = os.environ.get(key, "")
+        if not val:
+            raise ValueError(f"Required environment variable {key} is not set")
+        return val
+
+    @staticmethod
     def get_bool(key: str, *, default: bool = False) -> bool:
         return Env.get_str(key, str(default)).lower() in ("true", "1", "yes")
 
     @staticmethod
     def get_int(key: str, *, default: int = 0) -> int:
-        return int(Env.get_str(key, str(default)))
+        val = Env.get_str(key, str(default))
+        try:
+            return int(val)
+        except ValueError:
+            raise ValueError(f"Environment variable {key} must be an integer, got: {val!r}") from None
 
     @staticmethod
     def get_list(key: str, *, default: str = "", sep: str = ",") -> list[str]:
@@ -56,7 +68,10 @@ class Env:
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 key, _, value = line.partition("=")
-                os.environ.setdefault(key.strip(), value.strip())
+                value = value.strip()
+                if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
+                    value = value[1:-1]
+                os.environ.setdefault(key.strip(), value)
 
 
 class GracefulShutdown:
