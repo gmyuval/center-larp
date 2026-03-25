@@ -1,5 +1,6 @@
 import os
 import signal
+import types
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -40,6 +41,8 @@ class Env:
     def database_url(key: str = "DATABASE_URL", default: str = "sqlite:///db.sqlite3") -> dict[str, object]:
         """Parse a DATABASE_URL into a Django DATABASES entry."""
         url = Env.get_str(key, default)
+        if not url:
+            raise ValueError(f"Environment variable {key} is empty — provide a valid database URL")
         if url.startswith("sqlite"):
             return {
                 "ENGINE": "django.db.backends.sqlite3",
@@ -86,5 +89,5 @@ class GracefulShutdown:
         signal.signal(signal.SIGINT, cls._handle)
 
     @classmethod
-    def _handle(cls, signum: int, frame: object) -> None:
+    def _handle(cls, signum: int, frame: types.FrameType | None) -> None:
         cls.should_stop = True
