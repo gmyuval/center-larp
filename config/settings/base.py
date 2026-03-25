@@ -16,11 +16,11 @@ env = Env()
 
 # --- Core ---
 
-SECRET_KEY: str = env.str("DJANGO_SECRET_KEY")
-DEBUG: bool = env.bool("DJANGO_DEBUG")
-ALLOWED_HOSTS: list[str] = env.list("DJANGO_ALLOWED_HOSTS")
-CSRF_TRUSTED_ORIGINS: list[str] = env.list("CSRF_TRUSTED_ORIGINS")
-APP_BASE_URL: str = env.str("APP_BASE_URL", "http://localhost:8000")
+SECRET_KEY: str = env.get_str("DJANGO_SECRET_KEY")
+DEBUG: bool = env.get_bool("DJANGO_DEBUG")
+ALLOWED_HOSTS: list[str] = env.get_list("DJANGO_ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS: list[str] = env.get_list("CSRF_TRUSTED_ORIGINS")
+APP_BASE_URL: str = env.get_str("APP_BASE_URL", "http://localhost:8000")
 
 # --- Apps ---
 
@@ -62,8 +62,8 @@ AUTH_PASSWORD_VALIDATORS = AUTH_VALIDATORS
 
 # --- i18n ---
 
-LANGUAGE_CODE: str = env.str("LANGUAGE_CODE", "he")
-TIME_ZONE: str = env.str("SITE_TIME_ZONE", "Asia/Jerusalem")
+LANGUAGE_CODE: str = env.get_str("LANGUAGE_CODE", "he")
+TIME_ZONE: str = env.get_str("SITE_TIME_ZONE", "Asia/Jerusalem")
 USE_I18N: bool = True
 USE_TZ: bool = True
 
@@ -80,12 +80,12 @@ STORAGES = {
 
 # --- Email ---
 
-EMAIL_HOST: str = env.str("EMAIL_HOST", "localhost")
-EMAIL_PORT: int = env.int("EMAIL_PORT", default=587)
-EMAIL_USE_TLS: bool = env.bool("EMAIL_USE_TLS", default=True)
-EMAIL_HOST_USER: str = env.str("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD: str = env.str("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL: str = env.str("DEFAULT_FROM_EMAIL", "noreply@larp.co.il")
+EMAIL_HOST: str = env.get_str("EMAIL_HOST", "localhost")
+EMAIL_PORT: int = env.get_int("EMAIL_PORT", default=587)
+EMAIL_USE_TLS: bool = env.get_bool("EMAIL_USE_TLS", default=True)
+EMAIL_HOST_USER: str = env.get_str("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD: str = env.get_str("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL: str = env.get_str("DEFAULT_FROM_EMAIL", "noreply@larp.co.il")
 
 # --- Misc ---
 

@@ -1,4 +1,5 @@
 import os
+import signal
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
@@ -7,26 +8,26 @@ class Env:
     """Typed access to environment variables."""
 
     @staticmethod
-    def str(key: str, default: str = "") -> str:
+    def get_str(key: str, default: str = "") -> str:
         return os.environ.get(key, default)
 
     @staticmethod
-    def bool(key: str, *, default: bool = False) -> bool:
-        return Env.str(key, str(default)).lower() in ("true", "1", "yes")
+    def get_bool(key: str, *, default: bool = False) -> bool:
+        return Env.get_str(key, str(default)).lower() in ("true", "1", "yes")
 
     @staticmethod
-    def int(key: str, *, default: int = 0) -> int:
-        return int(Env.str(key, str(default)))
+    def get_int(key: str, *, default: int = 0) -> int:
+        return int(Env.get_str(key, str(default)))
 
     @staticmethod
-    def list(key: str, *, default: str = "", sep: str = ",") -> list[str]:
-        val = Env.str(key, default)
+    def get_list(key: str, *, default: str = "", sep: str = ",") -> list[str]:
+        val = Env.get_str(key, default)
         return [item.strip() for item in val.split(sep) if item.strip()] if val else []
 
     @staticmethod
     def database_url(key: str = "DATABASE_URL", default: str = "sqlite:///db.sqlite3") -> dict[str, object]:
         """Parse a DATABASE_URL into a Django DATABASES entry."""
-        url = Env.str(key, default)
+        url = Env.get_str(key, default)
         if url.startswith("sqlite"):
             return {
                 "ENGINE": "django.db.backends.sqlite3",
@@ -56,3 +57,18 @@ class Env:
             if line and not line.startswith("#") and "=" in line:
                 key, _, value = line.partition("=")
                 os.environ.setdefault(key.strip(), value.strip())
+
+
+class GracefulShutdown:
+    """Signal handler for graceful worker shutdown."""
+
+    should_stop: bool = False
+
+    @classmethod
+    def register(cls) -> None:
+        signal.signal(signal.SIGTERM, cls._handle)
+        signal.signal(signal.SIGINT, cls._handle)
+
+    @classmethod
+    def _handle(cls, signum: int, frame: object) -> None:
+        cls.should_stop = True

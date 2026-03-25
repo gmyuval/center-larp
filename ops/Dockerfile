@@ -19,7 +19,6 @@ RUN adduser --disabled-password --gecos "" appuser \
 
 USER appuser
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD curl -f http://localhost:8000/health/live/ || exit 1
+# HEALTHCHECK is defined per-service in docker-compose.yml (web only, not worker)
 
 CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60"]
