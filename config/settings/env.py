@@ -66,6 +66,7 @@ class GracefulShutdown:
 
     @classmethod
     def register(cls) -> None:
+        cls.should_stop = False
         signal.signal(signal.SIGTERM, cls._handle)
         signal.signal(signal.SIGINT, cls._handle)
 

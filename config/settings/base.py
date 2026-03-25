@@ -62,8 +62,8 @@ AUTH_PASSWORD_VALIDATORS = AUTH_VALIDATORS
 
 # --- i18n ---
 
-LANGUAGE_CODE: str = env.get_str("LANGUAGE_CODE", "he")
-TIME_ZONE: str = env.get_str("SITE_TIME_ZONE", "Asia/Jerusalem")
+LANGUAGE_CODE: str = "he"
+TIME_ZONE: str = "Asia/Jerusalem"
 USE_I18N: bool = True
 USE_TZ: bool = True
 
