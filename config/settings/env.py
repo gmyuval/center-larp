@@ -49,6 +49,12 @@ class Env:
                 "NAME": url.split("///", 1)[1] if "///" in url else ":memory:",
             }
         parsed = urlparse(url)
+        pg_schemes = {"postgres", "postgresql", "postgis"}
+        if parsed.scheme not in pg_schemes and not parsed.scheme.startswith(("postgres+", "postgresql+")):
+            raise ValueError(
+                f"Unsupported DATABASE_URL scheme '{parsed.scheme}' — "
+                f"only sqlite and PostgreSQL (postgres://, postgresql://) are supported"
+            )
         options = parse_qs(parsed.query)
         db: dict[str, object] = {
             "ENGINE": "django.db.backends.postgresql",
