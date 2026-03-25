@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant Player
+    participant Web as Django Web
+    participant GM as GM / Admin
+    participant Worker as Django Worker
+    participant Cardcom
+    participant Morning
+
+    Player->>Web: Submit application
+    Web-->>Player: Submission confirmation
+    Web-->>GM: New application notification
+
+    GM->>Web: Approve application
+    GM->>Web: Generate payment link
+    Web->>Cardcom: Create Low Profile page
+    Cardcom-->>Web: LowProfileId + hosted URL
+    Web-->>Player: Payment link email (/pay/<token>)
+
+    Player->>Web: Open /pay/<token>
+    Web-->>Player: 302 to Cardcom hosted page
+    Player->>Cardcom: Complete payment
+    Cardcom-->>Web: Webhook callback
+    Web-->>Cardcom: HTTP 200 quickly
+
+    Worker->>Cardcom: GetLpResult(LowProfileId)
+    Cardcom-->>Worker: Verified payment result
+    Worker->>Web: Mark payment as paid
+    Worker->>Morning: Create accounting document
+    Morning-->>Worker: Document created
+    Worker-->>Player: Morning sends document email

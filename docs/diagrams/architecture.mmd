@@ -1,0 +1,11 @@
+flowchart LR
+    Visitor[Visitor Browser] --> Proxy[Reverse Proxy / TLS]
+    GM[GM Browser] --> Proxy
+    Proxy --> Web[Django Web App]
+    Web --> DB[(PostgreSQL)]
+    Web --> Mail[SMTP / Mail Provider]
+    Cardcom[Cardcom Low Profile] -->|Webhook| Web
+    Worker[Django Worker] --> DB
+    Worker --> Cardcom
+    Worker --> Morning[Morning API]
+    Morning -->|Optional document/created webhook| Web

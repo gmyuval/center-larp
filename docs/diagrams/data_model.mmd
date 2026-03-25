@@ -1,0 +1,61 @@
+classDiagram
+    class Event {
+      +uuid id
+      +string slug
+      +string title
+      +decimal price_amount
+      +string currency
+      +bool registration_open
+      +bool public_roster_enabled
+      +int morning_document_type
+    }
+
+    class Application {
+      +uuid public_id
+      +string full_name
+      +string display_name
+      +string email
+      +string phone
+      +json answers_json
+      +string gm_status
+      +string payment_status
+      +string invoice_status
+      +bool is_publicly_published
+      +bool show_character_publicly
+      +bool show_faction_publicly
+    }
+
+    class PaymentAttempt {
+      +uuid public_id
+      +string vendor_low_profile_id
+      +string status
+      +string payment_url
+      +json raw_create_response_json
+      +json raw_getlpresult_json
+    }
+
+    class Document {
+      +string vendor_document_id
+      +int document_type
+      +string document_number
+      +string status
+    }
+
+    class IntegrationEvent {
+      +string source
+      +string event_type
+      +string dedupe_key
+      +string processing_status
+    }
+
+    class AuditLog {
+      +string actor_label
+      +string action
+      +string target_type
+    }
+
+    Event "1" --> "*" Application
+    Application "1" --> "*" PaymentAttempt
+    Application "1" --> "*" Document
+    PaymentAttempt "1" --> "0..1" Document
+    Application "1" --> "*" AuditLog

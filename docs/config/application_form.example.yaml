@@ -1,0 +1,55 @@
+version: 1
+title: "Application form"
+submit_button: "Submit application"
+
+fields:
+  - key: full_name
+    type: text
+    label: "שם מלא"
+    required: true
+    max_length: 120
+
+  - key: display_name
+    type: text
+    label: "שם שיופיע ברשימה הציבורית"
+    required: true
+    max_length: 120
+    help_text: "יכול להיות השם המלא או כינוי לבחירתך"
+
+  - key: email
+    type: email
+    label: "אימייל"
+    required: true
+    max_length: 254
+
+  - key: phone
+    type: tel
+    label: "טלפון"
+    required: true
+    max_length: 32
+
+  - key: age_confirm
+    type: checkbox
+    label: "אני מאשר/ת שאני עומד/ת בדרישות הגיל של האירוע"
+    required: true
+
+  - key: accessibility_notes
+    type: textarea
+    label: "נגישות / צרכים שחשוב שנכיר"
+    required: false
+    rows: 4
+
+  - key: character_pitch
+    type: textarea
+    label: "רעיון קצר לדמות או למה מושך אותך במשחק"
+    required: false
+    rows: 6
+
+  - key: social_fit
+    type: textarea
+    label: "כל דבר נוסף שחשוב ל-GMs לדעת"
+    required: false
+    rows: 6
+
+spam_protection:
+  honeypot_field: "website"

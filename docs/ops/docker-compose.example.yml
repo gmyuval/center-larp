@@ -1,0 +1,40 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: ops/Dockerfile.example
+    env_file:
+      - .env.example
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60"
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  worker:
+    build:
+      context: ..
+      dockerfile: ops/Dockerfile.example
+    env_file:
+      - .env.example
+    command: >
+      sh -c "python manage.py run_jobs"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: center_larp
+      POSTGRES_USER: center_larp
+      POSTGRES_PASSWORD: replace-me
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
