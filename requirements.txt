@@ -1,0 +1,51 @@
+annotated-types==0.7.0
+    # via pydantic
+anyio==4.13.0
+    # via httpx
+asgiref==3.11.1
+    # via django
+certifi==2026.2.25
+    # via
+    #   httpcore
+    #   httpx
+django==5.2.12
+    # via center-larp (pyproject.toml)
+gunicorn==23.0.0
+    # via center-larp (pyproject.toml)
+h11==0.16.0
+    # via httpcore
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
+    # via center-larp (pyproject.toml)
+idna==3.11
+    # via
+    #   anyio
+    #   httpx
+packaging==26.0
+    # via gunicorn
+psycopg[binary]==3.3.3
+    # via center-larp (pyproject.toml)
+psycopg-binary==3.3.3
+    # via psycopg
+pydantic==2.12.5
+    # via center-larp (pyproject.toml)
+pydantic-core==2.41.5
+    # via pydantic
+pyyaml==6.0.3
+    # via center-larp (pyproject.toml)
+sqlparse==0.5.5
+    # via django
+typing-extensions==4.15.0
+    # via
+    #   pydantic
+    #   pydantic-core
+    #   typing-inspection
+typing-inspection==0.4.2
+    # via pydantic
+tzdata==2025.3
+    # via
+    #   django
+    #   psycopg
+whitenoise==6.12.0
+    # via center-larp (pyproject.toml)
