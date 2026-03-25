@@ -219,7 +219,7 @@ Acceptance:
 
 ## Dependency Graph
 
-```
+```text
 PR 1 (scaffold)
   └─> PR 2 (models)
         └─> PR 3 (config + landing)

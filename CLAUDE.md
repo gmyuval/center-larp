@@ -10,15 +10,16 @@ Center LARP is a single-event LARP registration site for `center.larp.co.il`. Pl
 
 ## Stack
 
-- **Python 3.14**, **Django 5.2 LTS**, **PostgreSQL 16+**
+- **Python 3.14**, **Django 5.2 LTS**, **PostgreSQL 18** (DigitalOcean managed cluster `db-postgresql-fra1-01`)
 - Conda env: `conda env create -f environment.yml` (provides Python 3.14, pip-tools, pre-commit)
 - Dependencies: `docs/ops/requirements.example.txt` (Django, gunicorn, psycopg3, httpx, django-environ, whitenoise, pydantic)
 - Background jobs: DB-backed outbox + `manage.py run_jobs` worker (no Redis/Celery)
 - Frontend: Django templates + vanilla JS, no SPA
+- **Deployment**: DigitalOcean, `fra1` region. New `center_larp` database on existing managed PG cluster (SSL required, use private connection URI from within DO VPC).
 
 ## Planned Repo Structure
 
-```
+```text
 manage.py
 config/settings/{base,local,production}.py
 config/{urls,wsgi,asgi}.py

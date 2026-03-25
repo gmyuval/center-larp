@@ -23,14 +23,18 @@ jobs:
           python-version: "3.14"
           allow-prereleases: true
 
-      - name: Install ruff
-        run: pip install ruff
+      - name: Install linters
+        run: pip install ruff==0.15.7 mypy==1.19.1
 
       - name: Run ruff check
         run: ruff check .
 
       - name: Run ruff format check
         run: ruff format --check .
+
+      - name: Run mypy
+        run: |
+          if [ -f pyproject.toml ]; then mypy .; fi
 
   test:
     name: Test
@@ -62,6 +66,7 @@ jobs:
         with:
           python-version: "3.14"
           allow-prereleases: true
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
