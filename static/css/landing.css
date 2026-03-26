@@ -16,7 +16,7 @@
 body {
   background-color: var(--ink);
   color: var(--cream);
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-weight: 300;
   overflow-x: hidden;
 }
@@ -67,11 +67,11 @@ body::before {
   color: var(--gold);
   margin-bottom: 2.5rem;
   opacity: 0;
-  animation: fadeUp 1s ease 0.2s forwards;
+  animation: fade-up 1s ease 0.2s forwards;
 }
 
 .title {
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-weight: 900;
   font-size: clamp(3.5rem, 12vw, 6.5rem);
   line-height: 0.95;
@@ -79,7 +79,7 @@ body::before {
   color: var(--cream);
   margin-bottom: 1rem;
   opacity: 0;
-  animation: fadeUp 1s ease 0.4s forwards;
+  animation: fade-up 1s ease 0.4s forwards;
 }
 
 .title span {
@@ -93,7 +93,7 @@ body::before {
   max-width: 420px;
   margin-top: 2rem;
   opacity: 0;
-  animation: fadeUp 1s ease 0.6s forwards;
+  animation: fade-up 1s ease 0.6s forwards;
 }
 
 /* LOGISTICS */
@@ -122,7 +122,7 @@ body::before {
 }
 
 .logistics-value {
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--cream);
@@ -160,7 +160,7 @@ body::before {
 }
 
 .section-title {
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-weight: 400;
   font-size: 0.75rem;
   letter-spacing: 0.25em;
@@ -194,7 +194,7 @@ body::before {
 }
 
 .faction-glyph {
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-size: 2rem;
   font-weight: 900;
   color: var(--rust);
@@ -204,7 +204,7 @@ body::before {
 }
 
 .faction-name {
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-weight: 700;
   font-size: 1.15rem;
   color: var(--cream);
@@ -256,7 +256,7 @@ body::before {
 }
 
 .cta-title {
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-weight: 700;
   font-size: 1.3rem;
   color: var(--cream);
@@ -269,7 +269,7 @@ body::before {
 }
 
 .price {
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-size: 3rem;
   font-weight: 900;
   color: var(--cream);
@@ -289,7 +289,7 @@ body::before {
   padding: 0.9rem 2.5rem;
   border: 1px solid var(--gold);
   color: var(--gold);
-  font-family: 'Alef', Arial, sans-serif;
+  font-family: Alef, Arial, sans-serif;
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-decoration: none;
@@ -303,7 +303,7 @@ body::before {
   color: var(--ink);
 }
 
-@keyframes fadeUp {
+@keyframes fade-up {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -311,6 +311,16 @@ body::before {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow,
+  .title,
+  .subtitle {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 

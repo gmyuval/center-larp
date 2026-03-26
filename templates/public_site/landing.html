@@ -44,9 +44,14 @@
       <div class="divider">{{ landing.divider_label }}</div>
       {% endif %}
 
-      {% if landing.factions_intro_title %}
+      {% if landing.factions_intro_title or landing.factions_intro_text %}
       <div class="factions-intro page">
+        {% if landing.factions_intro_title %}
         <p class="section-title">{{ landing.factions_intro_title }}</p>
+        {% endif %}
+        {% if landing.factions_intro_text %}
+        <p>{{ landing.factions_intro_text }}</p>
+        {% endif %}
       </div>
       {% endif %}
 

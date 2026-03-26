@@ -1,11 +1,14 @@
+import logging
 from typing import Any
 
 from django.db import connection
-from django.http import JsonResponse
+from django.http import HttpResponse, HttpResponseServerError, JsonResponse
 from django.views import View
 from django.views.generic import TemplateView
 
 from .config_loader import ConfigLoader
+
+logger = logging.getLogger(__name__)
 
 
 class LivenessView(View):
@@ -25,6 +28,13 @@ class ReadinessView(View):
 
 class LandingPageView(TemplateView):
     template_name = "public_site/landing.html"
+
+    def get(self, request: Any, *args: Any, **kwargs: Any) -> HttpResponse:
+        try:
+            return super().get(request, *args, **kwargs)
+        except Exception:
+            logger.exception("Failed to load event configuration")
+            return HttpResponseServerError("Site configuration error. Please contact the organizers.")
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)

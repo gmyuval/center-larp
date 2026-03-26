@@ -1,16 +1,25 @@
+import logging
+from datetime import datetime
 from pathlib import Path
+from threading import RLock
 from typing import Any
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, NonNegativeFloat
+
+logger = logging.getLogger(__name__)
 
 
 class LandingLogisticsItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     label: str
     value: str
 
 
 class LandingConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     eyebrow: str = ""
     title_main: str = ""
     title_accent: str = ""
@@ -27,30 +36,38 @@ class LandingConfig(BaseModel):
 
 
 class FactionConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     glyph: str
     name: str
     description: str
 
 
 class EmailsConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     gm_notification_to: list[str] = Field(default_factory=list)
     public_contact_email: str = ""
 
 
 class RosterConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     sort_by: str = "display_name"
 
 
 class EventConfig(BaseModel):
     """Pydantic model for event_config/current_event.yaml."""
 
+    model_config = ConfigDict(extra="forbid")
+
     slug: str
     title: str
     subtitle: str = ""
     location_text: str = ""
-    start_at: str
-    end_at: str
-    price_amount: float
+    start_at: datetime
+    end_at: datetime
+    price_amount: NonNegativeFloat
     currency: str = "ILS"
     registration_open: bool = False
     public_roster_enabled: bool = False
@@ -64,6 +81,8 @@ class EventConfig(BaseModel):
 
 
 class FormFieldConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     key: str
     type: str
     label: str
@@ -74,11 +93,15 @@ class FormFieldConfig(BaseModel):
 
 
 class SpamProtectionConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     honeypot_field: str = "website"
 
 
 class FormSchemaConfig(BaseModel):
     """Pydantic model for event_config/application_form.yaml."""
+
+    model_config = ConfigDict(extra="forbid")
 
     version: int = 1
     title: str = ""
@@ -92,18 +115,21 @@ class ConfigLoader:
 
     _event_config: EventConfig | None = None
     _form_schema: FormSchemaConfig | None = None
+    _lock: RLock = RLock()
 
     @classmethod
     def get_event_config(cls, *, reload: bool = False) -> EventConfig:
-        if cls._event_config is None or reload:
-            cls._event_config = cls._load_event_config()
-        return cls._event_config
+        with cls._lock:
+            if cls._event_config is None or reload:
+                cls._event_config = cls._load_event_config()
+            return cls._event_config
 
     @classmethod
     def get_form_schema(cls, *, reload: bool = False) -> FormSchemaConfig:
-        if cls._form_schema is None or reload:
-            cls._form_schema = cls._load_form_schema()
-        return cls._form_schema
+        with cls._lock:
+            if cls._form_schema is None or reload:
+                cls._form_schema = cls._load_form_schema()
+            return cls._form_schema
 
     @classmethod
     def _config_dir(cls) -> Path:
@@ -130,5 +156,6 @@ class ConfigLoader:
 
     @classmethod
     def clear_cache(cls) -> None:
-        cls._event_config = None
-        cls._form_schema = None
+        with cls._lock:
+            cls._event_config = None
+            cls._form_schema = None
