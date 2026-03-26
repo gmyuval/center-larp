@@ -27,11 +27,18 @@ class Job(models.Model):
 
     class Meta:
         ordering = ["available_at"]
+        indexes = [
+            models.Index(fields=["queue_name", "status", "available_at"], name="idx_job_dequeue"),
+        ]
         constraints = [
             models.UniqueConstraint(
                 fields=["dedupe_key"],
                 condition=~models.Q(dedupe_key=""),
                 name="unique_non_empty_dedupe_key",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(attempt_count__lte=models.F("max_attempts")),
+                name="attempts_lte_max_attempts",
             ),
         ]
 

@@ -3,6 +3,8 @@ import uuid
 from django.db import models
 from django.utils import timezone
 
+_ACTIVE_STATUS_VALUES = ["created", "sent"]
+
 
 class PaymentAttempt(models.Model):
     """A single payment link / attempt for an application."""
@@ -52,7 +54,7 @@ class PaymentAttempt(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["application"],
-                condition=models.Q(status__in=["created", "sent"]),
+                condition=models.Q(status__in=_ACTIVE_STATUS_VALUES),
                 name="one_active_attempt_per_application",
             ),
         ]

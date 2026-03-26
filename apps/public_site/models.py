@@ -30,6 +30,12 @@ class Event(models.Model):
 
     class Meta:
         ordering = ["-start_at"]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(end_at__gt=models.F("start_at")),
+                name="event_end_after_start",
+            ),
+        ]
 
     def __str__(self) -> str:
         return self.title
