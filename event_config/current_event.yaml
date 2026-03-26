@@ -1,0 +1,51 @@
+slug: center-larp-2026
+title: "בשערי זרים"
+subtitle: "פנטזיה אורבנית בזמן מלחמה"
+location_text: "דיזנגוף סנטר"
+start_at: "2026-04-10T18:00:00+03:00"
+end_at: "2026-04-11T03:00:00+03:00"
+price_amount: 60.00
+currency: "ILS"
+registration_open: true
+public_roster_enabled: true
+morning_document_type: 320
+cardcom_language: "he"
+
+landing:
+  eyebrow: "ONE-SHOT LARP"
+  title_main: "בשערי"
+  title_accent: "זרים"
+  subtitle: "פנטזיה אורבנית בזמן מלחמה"
+  logistics:
+    - label: "DATE"
+      value: "10 באפריל 2026"
+    - label: "LOCATION"
+      value: "דיזנגוף סנטר"
+    - label: "PRICE"
+      value: "60 NIS"
+  divider_label: "SETTING"
+  factions_intro_title: "FACTIONS"
+  factions_intro_text: "Replace with final intro copy."
+  about_title: "ABOUT"
+  about_paragraphs:
+    - "Replace with final about paragraph one."
+    - "Replace with final about paragraph two."
+  cta_title: "Ready to apply?"
+  cta_text: "Fill the short application form and wait for GM approval."
+  cta_button: "Apply now"
+
+factions:
+  - glyph: "א"
+    name: "Faction One"
+    description: "Replace with final faction description."
+  - glyph: "ב"
+    name: "Faction Two"
+    description: "Replace with final faction description."
+
+emails:
+  gm_notification_to:
+    - "gms@example.com"
+  public_contact_email: "info@larp.co.il"
+
+roster:
+  sort_by: "display_name"

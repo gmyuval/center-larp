@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static currency_tags %}
+<html lang="he" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ event.title }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+
+<body>
+  <main>
+
+  <section class="hero">
+    <p class="eyebrow">{{ landing.eyebrow }}</p>
+    <h1 class="title">{{ landing.title_main }}<br><span>{{ landing.title_accent }}</span></h1>
+    <p class="subtitle">{{ landing.subtitle }}</p>
+  </section>
+
+  {% if landing.logistics %}
+  <div class="logistics">
+    {% for item in landing.logistics %}
+    <div>
+      <span class="logistics-label">{{ item.label }}</span>
+      <span class="logistics-value">{{ item.value }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="about page">
+    {% if landing.about_title %}
+    <p class="section-title"><em>{{ landing.about_title }}</em></p>
+    {% endif %}
+
+    {% for paragraph in landing.about_paragraphs %}
+    <p>{{ paragraph }}</p>
+    {% endfor %}
+
+    {% if factions %}
+    <div>
+      {% if landing.divider_label %}
+      <div class="divider">{{ landing.divider_label }}</div>
+      {% endif %}
+
+      {% if landing.factions_intro_title or landing.factions_intro_text %}
+      <div class="factions-intro page">
+        {% if landing.factions_intro_title %}
+        <p class="section-title">{{ landing.factions_intro_title }}</p>
+        {% endif %}
+        {% if landing.factions_intro_text %}
+        <p>{{ landing.factions_intro_text }}</p>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div class="factions">
+        {% for faction in factions %}
+        <div class="faction">
+          <div class="faction-glyph" aria-hidden="true">{{ faction.glyph }}</div>
+          <div>
+            <div class="faction-name">{{ faction.name }}</div>
+            <div class="faction-desc">{{ faction.description }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="cta page">
+    {% if landing.cta_title %}
+    <p class="cta-title">{{ landing.cta_title }}</p>
+    {% endif %}
+    {% if landing.cta_text %}
+    <p class="cta-text">{{ landing.cta_text }}</p>
+    {% endif %}
+    <div class="price"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</div>
+    <a href="{% url 'public_site:apply' %}" class="btn">{{ landing.cta_button }}</a>
+  </div>
+
+  </main>
+</body>
+
+</html>
