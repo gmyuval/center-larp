@@ -10,6 +10,9 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   lint:
     name: Lint
@@ -25,11 +28,10 @@ jobs:
           python-version: "3.14"
           allow-prereleases: true
 
-      - name: Install linters
+      - name: Install dependencies
         run: |
-          pip install ruff==0.15.7 mypy==1.19.1
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install 'django-stubs>=5'
+          pip install --upgrade pip
+          pip install -r requirements-dev.txt
 
       - name: Run ruff check
         run: ruff check .
