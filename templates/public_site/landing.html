@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static currency_tags %}
 <html lang="he" dir="rtl">
 
 <head>
@@ -78,7 +78,7 @@
     {% if landing.cta_text %}
     <p class="cta-text">{{ landing.cta_text }}</p>
     {% endif %}
-    <div class="price"><sup>₪</sup>{{ event.price_amount|floatformat:0 }}</div>
+    <div class="price"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</div>
     <a href="{% url 'public_site:apply' %}" class="btn">{{ landing.cta_button }}</a>
   </div>
 
