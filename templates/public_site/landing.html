@@ -11,6 +11,7 @@
 </head>
 
 <body>
+  <main>
 
   <section class="hero">
     <p class="eyebrow">{{ landing.eyebrow }}</p>
@@ -58,7 +59,7 @@
       <div class="factions">
         {% for faction in factions %}
         <div class="faction">
-          <div class="faction-glyph">{{ faction.glyph }}</div>
+          <div class="faction-glyph" aria-hidden="true">{{ faction.glyph }}</div>
           <div>
             <div class="faction-name">{{ faction.name }}</div>
             <div class="faction-desc">{{ faction.description }}</div>
@@ -81,6 +82,7 @@
     <a href="{% url 'public_site:apply' %}" class="btn">{{ landing.cta_button }}</a>
   </div>
 
+  </main>
 </body>
 
 </html>
