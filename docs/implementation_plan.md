@@ -225,19 +225,21 @@ Acceptance:
 
 Deliverables:
 - `.github/workflows/deploy.yml` — GitHub Actions CD workflow triggered on push to `main`:
-  - Build Docker image
+  - Build Docker image, tag by immutable SHA digest (not mutable `latest`)
   - Push to DigitalOcean Container Registry (`registry.digitalocean.com/praxiscode/center-larp`)
-  - SSH into droplet and pull/restart containers
+  - SSH into droplet, pull by digest, health-check new containers, rollback on failure
 - `ops/docker-compose.prod.yml` — production compose file using `image:` from DOCR (not local `build:`)
 - Droplet provisioning (s-1vcpu-2gb, fra1, default-fra1 VPC) via DO MCP or doctl
 - `center_larp` database + dedicated user created on existing managed PG cluster
 - DNS: Cloudflare A record for `center.larp.co.il` pointing to droplet public IP
 - Finalized `ops/nginx.center.larp.co.il.conf` from example
 - Final `ops/.env.example` update with all required production variables
-- GitHub repository secrets configured for deployment (DO API token, SSH key, registry credentials)
+- GitHub environment secrets with least-privilege, scoped credentials; use OIDC/short-lived tokens where available (e.g., DOCR); avoid persistent long-lived registry passwords
 
 Acceptance:
 - Push to `main` triggers build → push to DOCR → deploy to droplet
+- Deployment uses immutable image digest, not mutable tags
+- Failed health check triggers automatic rollback to previous image
 - `https://center.larp.co.il/health/live/` returns 200
 - `https://center.larp.co.il/health/ready/` returns 200 (DB connected)
 - GM admin accessible at `/gm/`

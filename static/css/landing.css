@@ -5,6 +5,7 @@
   --rust: #6a8494;
   --shadow: #181b20;
   --muted: #5e6870;
+  --ink-hover: #15181d;
 }
 
 * {
@@ -190,7 +191,7 @@ body::before {
 }
 
 .faction:hover {
-  background: #15181d;
+  background: var(--ink-hover);
 }
 
 .faction-glyph {

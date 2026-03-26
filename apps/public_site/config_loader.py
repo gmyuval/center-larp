@@ -140,6 +140,7 @@ class ConfigLoader:
         path = cls._config_dir() / filename
         if not path.is_file():
             raise FileNotFoundError(f"Config file not found: {path}")
+        logger.debug("Loading config from %s", path)
         with path.open(encoding="utf-8") as f:
             data = yaml.safe_load(f)
         if not isinstance(data, dict):
