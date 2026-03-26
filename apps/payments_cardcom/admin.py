@@ -7,6 +7,7 @@ from .models import PaymentAttempt
 @admin.register(PaymentAttempt)
 class PaymentAttemptAdmin(admin.ModelAdmin):
     list_display = ("public_id", "application", "amount", "status", "created_at")
+    list_select_related = ("application",)
     list_filter = ("status", "vendor")
     search_fields = ("public_id", "vendor_low_profile_id")
     readonly_fields = ("public_id", "created_at")
