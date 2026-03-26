@@ -29,7 +29,7 @@ class PaymentAttempt(models.Model):
 
     # --- Payment details ---
     amount = models.DecimalField(max_digits=8, decimal_places=2)
-    currency = models.CharField(max_length=3, default="ILS")
+    currency = models.CharField(max_length=3, default="ILS", editable=False)
     vendor = models.CharField(max_length=20, default="cardcom")
 
     # --- Cardcom fields ---
@@ -52,6 +52,10 @@ class PaymentAttempt(models.Model):
     class Meta:
         ordering = ["-created_at"]
         constraints = [
+            models.CheckConstraint(
+                condition=models.Q(currency="ILS"),
+                name="payment_attempt_currency_ils",
+            ),
             models.UniqueConstraint(
                 fields=["application"],
                 condition=models.Q(status__in=_ACTIVE_STATUS_VALUES),

@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.contrib import admin
 from django.http import HttpRequest
 
@@ -13,6 +11,6 @@ class DocumentAdmin(admin.ModelAdmin):
     search_fields = ("vendor_document_id", "document_number")
     readonly_fields = ("created_at", "updated_at")
 
-    def has_add_permission(self, request: HttpRequest, obj: Any = None) -> bool:  # noqa: ARG002
+    def has_add_permission(self, request: HttpRequest) -> bool:
         """Documents must only be created by the billing system after verified payment."""
         return False
