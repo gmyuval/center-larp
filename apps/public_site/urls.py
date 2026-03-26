@@ -1,0 +1,10 @@
+from django.urls import path
+
+from . import views
+
+app_name = "public_site"
+
+urlpatterns = [
+    path("", views.LandingPageView.as_view(), name="landing"),
+    path("apply/", views.LandingPageView.as_view(), name="apply"),  # placeholder until PR 4
+]

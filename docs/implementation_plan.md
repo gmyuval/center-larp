@@ -217,6 +217,34 @@ Acceptance:
 
 ---
 
+## Phase 6 — Deployment
+
+### PR 10: CD Pipeline & DigitalOcean Deployment (~400-600 lines)
+
+**Branch:** `feature/cd-pipeline`
+
+Deliverables:
+- `.github/workflows/deploy.yml` — GitHub Actions CD workflow triggered on push to `main`:
+  - Build Docker image
+  - Push to DigitalOcean Container Registry (`registry.digitalocean.com/praxiscode/center-larp`)
+  - SSH into droplet and pull/restart containers
+- `ops/docker-compose.prod.yml` — production compose file using `image:` from DOCR (not local `build:`)
+- Droplet provisioning (s-1vcpu-2gb, fra1, default-fra1 VPC) via DO MCP or doctl
+- `center_larp` database + dedicated user created on existing managed PG cluster
+- DNS: Cloudflare A record for `center.larp.co.il` pointing to droplet public IP
+- Finalized `ops/nginx.center.larp.co.il.conf` from example
+- Final `ops/.env.example` update with all required production variables
+- GitHub repository secrets configured for deployment (DO API token, SSH key, registry credentials)
+
+Acceptance:
+- Push to `main` triggers build → push to DOCR → deploy to droplet
+- `https://center.larp.co.il/health/live/` returns 200
+- `https://center.larp.co.il/health/ready/` returns 200 (DB connected)
+- GM admin accessible at `/gm/`
+- Worker container running alongside web container
+
+---
+
 ## Dependency Graph
 
 ```text
@@ -229,9 +257,11 @@ PR 1 (scaffold)
                           │     └─> PR 7 (job runner + verification)
                           │           └─> PR 8 (Morning) [parallel with PR 9]
                           └─> PR 9 (roster + hardening) [parallel with PR 8]
+                                └─> PR 10 (CD pipeline + deployment)
 ```
 
 PRs 8 and 9 are independent of each other and can be developed in parallel.
+PR 10 depends on PR 9 but can be started earlier if needed (infra provisioning is independent of app code).
 
 ---
 
@@ -243,3 +273,5 @@ PRs 8 and 9 are independent of each other and can be developed in parallel.
 | Final Morning document type (320 vs 305 vs 400) | PR 8 | Accountant |
 | Live Morning API create-document request shape | PR 8 | Dev (read live docs) |
 | GM notification target (mailbox / list / chat) | PR 4 | GMs |
+| DigitalOcean API token + SSH key for deployment | PR 10 | DevOps |
+| Cloudflare API token for DNS automation | PR 10 | DevOps |

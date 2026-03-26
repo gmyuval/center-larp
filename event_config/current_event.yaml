@@ -1,0 +1,51 @@
+slug: center-larp-2026
+title: "Center LARP"
+subtitle: "Landing page copy goes here"
+location_text: "Add final venue text"
+start_at: "2026-06-18T18:00:00+03:00"
+end_at: "2026-06-20T16:00:00+03:00"
+price_amount: 450.00
+currency: "ILS"
+registration_open: true
+public_roster_enabled: true
+morning_document_type: 320
+cardcom_language: "he"
+
+landing:
+  eyebrow: "ONE-SHOT LARP"
+  title_main: "Center"
+  title_accent: "LARP"
+  subtitle: "Replace this with the final event pitch."
+  logistics:
+    - label: "DATE"
+      value: "18-20 June 2026"
+    - label: "LOCATION"
+      value: "Final venue text"
+    - label: "PRICE"
+      value: "450 NIS"
+  divider_label: "SETTING"
+  factions_intro_title: "FACTIONS"
+  factions_intro_text: "Replace with final intro copy."
+  about_title: "ABOUT"
+  about_paragraphs:
+    - "Replace with final about paragraph one."
+    - "Replace with final about paragraph two."
+  cta_title: "Ready to apply?"
+  cta_text: "Fill the short application form and wait for GM approval."
+  cta_button: "Apply now"
+
+factions:
+  - glyph: "א"
+    name: "Faction One"
+    description: "Replace with final faction description."
+  - glyph: "ב"
+    name: "Faction Two"
+    description: "Replace with final faction description."
+
+emails:
+  gm_notification_to:
+    - "gms@example.com"
+  public_contact_email: "info@larp.co.il"
+
+roster:
+  sort_by: "display_name"
