@@ -19,6 +19,7 @@ FIELD_TYPE_MAP: Final[dict[str, str]] = {
     "tel": "_build_tel_field",
     "checkbox": "_build_boolean_field",
     "textarea": "_build_textarea_field",
+    "select": "_build_select_field",
 }
 
 # ---------------------------------------------------------------------------

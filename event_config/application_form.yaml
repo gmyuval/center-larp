@@ -1,11 +1,11 @@
-version: 1
-title: "Application form"
-submit_button: "Submit application"
+version: 2
+title: "שאלון הרשמה ללארפ בשערי זרים"
+submit_button: "שליחת הרשמה"
 
 fields:
   - key: full_name
     type: text
-    label: "שם מלא"
+    label: "מה השם שלך?"
     required: true
     max_length: 120
 
@@ -24,32 +24,41 @@ fields:
 
   - key: phone
     type: tel
-    label: "טלפון"
+    label: "מה הטלפון שלך?"
     required: true
     max_length: 32
 
-  - key: age_confirm
-    type: checkbox
-    label: "אני מאשר/ת שאני עומד/ת בדרישות הגיל של האירוע"
+  - key: faction_preference
+    type: select
+    label: "לאיזה סיעה אתה מעוניין להשתייך?"
     required: true
+    choices:
+      - "דיבוקים"
+      - "ג׳ינים"
+      - "טכנומאגים"
+      - "פיות"
 
-  - key: accessibility_notes
+  - key: faction_second_choice
+    type: select
+    label: "אם הסיעה הראשונה מלאה, מה הסיעה השנייה שתבחר בה?"
+    required: false
+    choices:
+      - "דיבוקים"
+      - "ג׳ינים"
+      - "טכנומאגים"
+      - "פיות"
+
+  - key: dietary_restrictions
+    type: text
+    label: "מחיר הכרטיס יכלול גם ארוחה ושתייה, האם יש הגבלה כלשהי שעלינו להכיר?"
+    required: false
+    max_length: 500
+
+  - key: additional_notes
     type: textarea
-    label: "נגישות / צרכים שחשוב שנכיר"
+    label: "דבר מה נוסף?"
     required: false
     rows: 4
-
-  - key: character_pitch
-    type: textarea
-    label: "רעיון קצר לדמות או למה מושך אותך במשחק"
-    required: false
-    rows: 6
-
-  - key: social_fit
-    type: textarea
-    label: "כל דבר נוסף שחשוב ל-GMs לדעת"
-    required: false
-    rows: 6
 
 spam_protection:
   honeypot_field: "website"

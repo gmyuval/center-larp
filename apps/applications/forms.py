@@ -117,6 +117,13 @@ class ApplicationForm(forms.Form):
             kwargs["max_length"] = config.max_length
         return forms.CharField(**kwargs)
 
+    def _build_select_field(self, config: FormFieldConfig) -> forms.ChoiceField:
+        """Build a ``ChoiceField`` with a ``Select`` widget from YAML choices."""
+        kwargs = self._base_kwargs(config)
+        blank_label = ("", "---")
+        kwargs["choices"] = [blank_label] + [(c, c) for c in config.choices]
+        return forms.ChoiceField(**kwargs)
+
     # ------------------------------------------------------------------
     # Validation
     # ------------------------------------------------------------------
