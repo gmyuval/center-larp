@@ -178,6 +178,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         """Transition selected applications from submitted to approved."""
         initial_count = queryset.count()
         now = timezone.now()
+        updated = 0
 
         with transaction.atomic():
             eligible = queryset.select_for_update().filter(gm_status__in=APPROVABLE_STATUSES)
@@ -192,7 +193,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     target=application,
                     details={"previous_status": previous_status},
                 )
-            updated = eligible.count()
+                updated += 1
 
         skipped = initial_count - updated
         if updated:
@@ -209,6 +210,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         """Transition selected applications from submitted to rejected."""
         initial_count = queryset.count()
         now = timezone.now()
+        updated = 0
 
         with transaction.atomic():
             eligible = queryset.select_for_update().filter(gm_status__in=REJECTABLE_STATUSES)
@@ -223,7 +225,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     target=application,
                     details={"previous_status": previous_status},
                 )
-            updated = eligible.count()
+                updated += 1
 
         skipped = initial_count - updated
         if updated:
@@ -240,6 +242,7 @@ class ApplicationAdmin(admin.ModelAdmin):
         """Publish approved applications to the public roster."""
         initial_count = queryset.count()
         now = timezone.now()
+        updated = 0
 
         with transaction.atomic():
             eligible = queryset.select_for_update().filter(
@@ -255,7 +258,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     action="publish",
                     target=application,
                 )
-            updated = eligible.count()
+                updated += 1
 
         skipped = initial_count - updated
         if updated:
@@ -271,6 +274,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     def action_unpublish(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Remove selected applications from the public roster."""
         initial_count = queryset.count()
+        updated = 0
 
         with transaction.atomic():
             eligible = queryset.select_for_update().filter(is_publicly_published=True)
@@ -282,7 +286,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                     action="unpublish",
                     target=application,
                 )
-            updated = eligible.count()
+                updated += 1
 
         skipped = initial_count - updated
         if updated:
