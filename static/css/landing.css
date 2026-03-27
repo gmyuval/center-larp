@@ -2,7 +2,8 @@
 
 /* ── Hero overrides ── */
 .hero {
-  min-height: 80vh;
+  min-height: auto;
+  padding-block: clamp(2rem, 6vw, 3.5rem) clamp(1rem, 3vw, 1.5rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,6 +23,15 @@
 /* ── Logistics (meta-grid) ── */
 .logistics-value {
   unicode-bidi: isolate;
+  direction: ltr;
+  text-align: start;
+}
+
+/* ── Section labels (enlarged) ── */
+.section__label {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  letter-spacing: 0.12em;
 }
 
 /* ── About section ── */
@@ -112,7 +122,7 @@
 /* ── Responsive: mobile ── */
 @media (max-width: 767px) {
   .hero {
-    min-height: 60vh;
+    padding-block: var(--space-xl) var(--space-md);
   }
 
   .faction-card {

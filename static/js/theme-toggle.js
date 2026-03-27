@@ -1,21 +1,23 @@
 (function () {
-  const KEY = 'center-larp-theme';
-  const root = document.documentElement;
-  const buttons = Array.from(document.querySelectorAll('[data-theme-choice]'));
-  const allowed = new Set(['auto', 'day', 'night']);
+  var KEY = 'center-larp-theme';
+  var root = document.documentElement;
+  var buttons = Array.from(document.querySelectorAll('[data-theme-choice]'));
+  var allowed = new Set(['auto', 'day', 'night']);
 
   function readTheme() {
-    const stored = window.localStorage.getItem(KEY);
-    if (stored && allowed.has(stored)) return stored;
+    try {
+      var stored = window.localStorage.getItem(KEY);
+      if (stored && allowed.has(stored)) return stored;
+    } catch (_) { /* private browsing or storage disabled */ }
     return root.dataset.theme || 'auto';
   }
 
   function applyTheme(mode) {
-    const next = allowed.has(mode) ? mode : 'auto';
+    var next = allowed.has(mode) ? mode : 'auto';
     root.dataset.theme = next;
-    window.localStorage.setItem(KEY, next);
+    try { window.localStorage.setItem(KEY, next); } catch (_) { /* ignore */ }
     buttons.forEach(function (button) {
-      const pressed = button.dataset.themeChoice === next;
+      var pressed = button.dataset.themeChoice === next;
       button.setAttribute('aria-pressed', pressed ? 'true' : 'false');
     });
   }
