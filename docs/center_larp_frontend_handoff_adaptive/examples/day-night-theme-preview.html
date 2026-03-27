@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Center LARP — Adaptive Theme Preview</title>
+  <link rel="stylesheet" href="../tokens/design-tokens-adaptive.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <div class="site-wordmark">CENTER LARP / PAPER · ASPHALT · SALT</div>
+        <div class="theme-toggle" role="group" aria-label="Theme mode">
+          <button class="theme-toggle__button" type="button" data-theme-choice="auto" aria-pressed="true">אוטומטי</button>
+          <button class="theme-toggle__button" type="button" data-theme-choice="day" aria-pressed="false">יום</button>
+          <button class="theme-toggle__button" type="button" data-theme-choice="night" aria-pressed="false">לילה</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container-wide">
+        <div class="hero__stack">
+          <div class="hero__ribbon">זה יהיה המשחק הכי טוב · Tel Aviv urban fantasy LARP</div>
+          <h1 class="hero__title">בשערי זרים</h1>
+          <p class="hero__subtitle">פנטזיה אורבנית בזמן מלחמה. פוסטר עירוני, מסמך רישום, וחוזה קסום על רקע תל אביב.</p>
+          <div class="hero__meta">9.4.26 · דיזנגוף סנטר · center.larp.co.il</div>
+          <div class="hero__art">────── קו הרקיע / wave marks / municipal marginalia ──────</div>
+          <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+            <a class="button button--primary" href="#apply">להגשת מועמדות</a>
+            <a class="button button--secondary" href="#roster">לרשימת המשתתפים</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--alt">
+        <div class="container-main">
+          <div class="meta-grid">
+            <article class="card">
+              <span class="card__eyebrow">מתי</span>
+              <h2 class="card__title">חמישי בערב</h2>
+              <p class="card__text">פתיחת שערים, מפגשים, והסכמים שלא בטוח שכדאי לקרוא עד הסוף.</p>
+            </article>
+            <article class="card">
+              <span class="card__eyebrow">איפה</span>
+              <h2 class="card__title">דיזנגוף סנטר</h2>
+              <p class="card__text">מרחב עירוני מוכר, פנימי, מואר, ועם מספיק פינות בשביל דברים שלא אמורים לקרות.</p>
+            </article>
+            <article class="card">
+              <span class="card__eyebrow">איך</span>
+              <h2 class="card__title">הגשת טופס ואישור ג״מים</h2>
+              <p class="card__text">קודם מגישים. אחר כך מאשרים. ורק אז נשלח קישור תשלום.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container-read">
+          <div class="rule">אוירה</div>
+          <p class="copy">העיר לא מסתירה את הסוד שלה. היא פשוט מדפיסה אותו על נייר, תולה אותו ליד מודעות תרבות, ומקווה שלא תעצרו לקרוא.</p>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="apply">
+        <div class="container-main">
+          <span class="section__label">טופס הגשה</span>
+          <div class="form-grid">
+            <label class="field">
+              <span class="field__label">שם מלא</span>
+              <input class="input" placeholder="השם האזרחי שלך" />
+            </label>
+            <label class="field">
+              <span class="field__label">אימייל</span>
+              <input class="input" placeholder="name@example.com" />
+            </label>
+            <label class="field field--full">
+              <span class="field__label">רעיון לדמות</span>
+              <textarea class="textarea" placeholder="לא מי אתם בעולם אחר — מי אתם כאן, בעיר הזאת, כשהחוזה כבר נחתם."></textarea>
+            </label>
+            <div class="field field--full">
+              <span class="field__meta">הטופס עובר לאישור ג״מים. לאחר אישור יישלח קישור תשלום.</span>
+              <a class="button button--primary" href="#">שליחת הטופס</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="roster">
+        <div class="container-main">
+          <span class="section__label">רוסטר פומבי</span>
+          <div class="roster-grid">
+            <article class="card roster-card">
+              <h3 class="roster-card__name">נועה לב</h3>
+              <div class="roster-card__meta">דמות פומבית: שומרת הארכיון</div>
+            </article>
+            <article class="card roster-card">
+              <h3 class="roster-card__name">אורי סער</h3>
+              <div class="roster-card__meta">השתתפות פורסמה · פרטי סיעה עדיין חסויים</div>
+            </article>
+            <article class="card roster-card">
+              <h3 class="roster-card__name">תמר רז</h3>
+              <div class="roster-card__meta">רק שם תצוגה זמין כרגע</div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="sticky-mobile-cta">
+      <a class="button button--primary" href="#apply">להגשת מועמדות</a>
+    </div>
+  </div>
+
+  <script src="../snippets/theme-toggle.js"></script>
+</body>
+</html>

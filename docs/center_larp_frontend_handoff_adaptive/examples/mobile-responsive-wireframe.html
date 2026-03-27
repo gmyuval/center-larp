@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="auto">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Center LARP — Mobile Responsive Wireframe</title>
+  <link rel="stylesheet" href="../tokens/design-tokens-adaptive.css" />
+  <style>
+    .frame-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding-block: 2rem 4rem;
+    }
+
+    .device-frame {
+      background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+      border: 1px solid var(--border-strong);
+      border-radius: 28px;
+      padding: 1rem;
+      box-shadow: var(--shadow-paper);
+      max-width: 430px;
+      margin-inline: auto;
+    }
+
+    .device-screen {
+      border: 1px solid var(--border-soft);
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--surface-page);
+      min-height: 780px;
+    }
+
+    .mini-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-soft);
+      background: var(--surface-overlay);
+    }
+
+    .mini-hero,
+    .mini-section,
+    .mini-roster,
+    .mini-state {
+      padding: 1.1rem 1rem 1.25rem;
+    }
+
+    .mini-ribbon {
+      display: inline-block;
+      margin-bottom: 0.9rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      font-size: var(--fs-meta);
+      color: var(--text-secondary);
+    }
+
+    .mini-title {
+      margin: 0;
+      font-size: clamp(2.2rem, 10vw, 3rem);
+      line-height: 1;
+    }
+
+    .mini-subtitle,
+    .mini-copy,
+    .mini-meta {
+      color: var(--text-secondary);
+      font-size: var(--fs-body-sm);
+    }
+
+    .mini-card {
+      padding: 0.95rem;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--surface-card-soft) 92%, transparent);
+    }
+
+    .mini-stack {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .caption {
+      max-width: 430px;
+      margin: 0.25rem auto 0;
+      font-size: var(--fs-body-sm);
+      color: var(--text-secondary);
+    }
+
+    @media (min-width: 1000px) {
+      .frame-grid {
+        grid-template-columns: repeat(2, minmax(320px, 430px));
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <section class="section container-main">
+      <div class="rule">Mobile blueprints</div>
+      <div class="frame-grid">
+        <div>
+          <div class="device-frame">
+            <div class="device-screen">
+              <div class="mini-header">
+                <div class="site-wordmark">CENTER</div>
+                <div class="theme-toggle"><button class="theme-toggle__button" aria-pressed="true">אוטומטי</button></div>
+              </div>
+              <div class="mini-hero">
+                <div class="mini-ribbon">urban fantasy dossier</div>
+                <h1 class="mini-title">בשערי זרים</h1>
+                <p class="mini-subtitle">Hero stays poster-like, but ornaments are reduced and CTA appears within the first viewport.</p>
+                <div class="mini-meta">9.4.26 · דיזנגוף סנטר</div>
+                <div style="margin-top: 1rem;"><a class="button button--primary" href="#">להגשת מועמדות</a></div>
+              </div>
+              <div class="mini-section mini-stack">
+                <div class="mini-card"><strong>When</strong><br><span class="mini-copy">Short stacked logistics cards</span></div>
+                <div class="mini-card"><strong>Where</strong><br><span class="mini-copy">No dense 3-column dashboard on mobile</span></div>
+                <div class="mini-card"><strong>How</strong><br><span class="mini-copy">Apply first, pay later if approved</span></div>
+              </div>
+            </div>
+          </div>
+          <p class="caption">Landing page mobile: stack hierarchy, reduce ornament density, keep hero and CTA in the first viewport.</p>
+        </div>
+
+        <div>
+          <div class="device-frame">
+            <div class="device-screen">
+              <div class="mini-header">
+                <div class="site-wordmark">APPLICATION</div>
+                <div class="site-wordmark">RTL · one column</div>
+              </div>
+              <div class="mini-section mini-stack">
+                <div class="mini-card"><strong>שם מלא</strong><br><span class="mini-copy">Full-width input</span></div>
+                <div class="mini-card"><strong>אימייל</strong><br><span class="mini-copy">Label above field, helper below</span></div>
+                <div class="mini-card"><strong>רעיון לדמות</strong><br><span class="mini-copy">Long-answer field stays full width</span></div>
+                <a class="button button--primary" href="#">שליחת הטופס</a>
+              </div>
+            </div>
+          </div>
+          <p class="caption">Application mobile: one-column only, large tap targets, no side-by-side narrative fields.</p>
+        </div>
+
+        <div>
+          <div class="device-frame">
+            <div class="device-screen">
+              <div class="mini-header">
+                <div class="site-wordmark">ROSTER</div>
+                <div class="site-wordmark">published view</div>
+              </div>
+              <div class="mini-roster mini-stack">
+                <div class="mini-card"><strong>נועה לב</strong><br><span class="mini-copy">דמות פומבית: שומרת הארכיון</span></div>
+                <div class="mini-card"><strong>אורי סער</strong><br><span class="mini-copy">פרטי הסיעה חסויים כרגע</span></div>
+                <div class="mini-card"><strong>תמר רז</strong><br><span class="mini-copy">רק שם תצוגה זמין</span></div>
+              </div>
+            </div>
+          </div>
+          <p class="caption">Roster mobile: stacked archive cards. No tiny columns, no paid status, optional public metadata only.</p>
+        </div>
+
+        <div>
+          <div class="device-frame">
+            <div class="device-screen">
+              <div class="mini-header">
+                <div class="site-wordmark">PAYMENT STATE</div>
+                <div class="site-wordmark">confirmation</div>
+              </div>
+              <div class="mini-state mini-stack">
+                <div class="mini-card">
+                  <strong>התשלום התקבל</strong>
+                  <p class="mini-copy">Keep state pages narrow, ceremonial, and calm. The next step should appear without long scrolling.</p>
+                  <a class="button button--secondary" href="#">חזרה לדף הראשי</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="caption">Payment/confirmation mobile: single state card, clear title, short explanation, one prominent next action.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

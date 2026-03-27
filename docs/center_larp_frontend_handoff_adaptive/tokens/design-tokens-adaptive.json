@@ -1,0 +1,117 @@
+{
+  "theme": {
+    "default": "auto",
+    "modes": [
+      "auto",
+      "day",
+      "night"
+    ],
+    "physical": {
+      "paper": {
+        "0": "#f5efe5",
+        "1": "#ede2d3",
+        "2": "#d8ccb9",
+        "3": "#fbf7f0"
+      },
+      "ink": {
+        "0": "#332c26",
+        "1": "#5c5349",
+        "2": "#81776a"
+      },
+      "sea": {
+        "0": "#71868d",
+        "1": "#8fa1a7",
+        "2": "#a9babf"
+      },
+      "night": {
+        "0": "#12171b",
+        "1": "#1a2026",
+        "2": "#232b31",
+        "3": "#2b343b"
+      },
+      "rust": {
+        "0": "#9b6f5a",
+        "1": "#b3836e"
+      },
+      "success": {
+        "0": "#556b5b",
+        "1": "#7b9683"
+      },
+      "warning": {
+        "0": "#8a6b46",
+        "1": "#b08b5b"
+      },
+      "error": {
+        "0": "#8c5c56",
+        "1": "#b87c74"
+      }
+    },
+    "semantic": {
+      "day": {
+        "surfacePage": "#f5efe5",
+        "surfacePageAlt": "#faf5ed",
+        "surfaceCard": "#ede2d3",
+        "surfaceCardSoft": "#fbf7f0",
+        "surfaceContrast": "#12171b",
+        "textPrimary": "#332c26",
+        "textSecondary": "#5c5349",
+        "textMuted": "#81776a",
+        "textOnContrast": "#f5efe5",
+        "borderSoft": "rgba(51, 44, 38, 0.16)",
+        "borderStrong": "rgba(51, 44, 38, 0.28)",
+        "accentPrimary": "#71868d",
+        "accentSecondary": "#8fa1a7",
+        "accentRust": "#9b6f5a",
+        "focusRing": "rgba(113, 134, 141, 0.28)"
+      },
+      "night": {
+        "surfacePage": "#12171b",
+        "surfacePageAlt": "#1a2026",
+        "surfaceCard": "#232b31",
+        "surfaceCardSoft": "#2b343b",
+        "surfaceContrast": "#f5efe5",
+        "textPrimary": "#eee4d7",
+        "textSecondary": "#d4c9bb",
+        "textMuted": "#ab9f92",
+        "textOnContrast": "#332c26",
+        "borderSoft": "rgba(238, 228, 215, 0.12)",
+        "borderStrong": "rgba(238, 228, 215, 0.24)",
+        "accentPrimary": "#96aab1",
+        "accentSecondary": "#7f949b",
+        "accentRust": "#b3836e",
+        "focusRing": "rgba(150, 170, 177, 0.32)"
+      }
+    }
+  },
+  "responsive": {
+    "breakpoints": {
+      "mobileSm": "0-479px",
+      "mobileLg": "480-767px",
+      "tablet": "768-1023px",
+      "desktop": "1024-1279px",
+      "desktopWide": "1280px+"
+    },
+    "containers": {
+      "wide": "1180px",
+      "main": "920px",
+      "read": "720px",
+      "narrow": "560px"
+    },
+    "touchTargetMin": "44px",
+    "spacing": {
+      "mobileSection": "2rem-2.5rem",
+      "tabletSection": "2.5rem-3rem",
+      "desktopSection": "4.5rem"
+    }
+  },
+  "recommendations": {
+    "mobileStickyCta": true,
+    "themeSwitcherModes": [
+      "auto",
+      "day",
+      "night"
+    ],
+    "themePersistence": "localStorage",
+    "layoutStrategy": "mobile-first"
+  }
+}
