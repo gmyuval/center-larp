@@ -50,7 +50,7 @@ jobs:
             export IMAGE_TAG="${IMAGE_TAG}"
 
             # Authenticate with DOCR
-            docker login registry.digitalocean.com -u ${{ secrets.DO_API_TOKEN }} -p ${{ secrets.DO_API_TOKEN }} 2>/dev/null
+            echo "${{ secrets.DO_API_TOKEN }}" | docker login registry.digitalocean.com -u ${{ secrets.DO_API_TOKEN }} --password-stdin 2>/dev/null
 
             # Pull new image
             docker compose -f docker-compose.yml pull web worker
