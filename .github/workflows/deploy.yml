@@ -1,0 +1,75 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_API_TOKEN }}
+
+      - name: Authenticate with DOCR
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Build and push image
+        run: |
+          IMAGE=registry.digitalocean.com/praxiscode/center-larp
+          SHA_TAG="${IMAGE}:sha-${GITHUB_SHA::8}"
+          LATEST_TAG="${IMAGE}:latest"
+          docker build -f ops/Dockerfile -t "${SHA_TAG}" -t "${LATEST_TAG}" .
+          docker push "${SHA_TAG}"
+          docker push "${LATEST_TAG}"
+          echo "IMAGE_TAG=sha-${GITHUB_SHA::8}" >> "$GITHUB_ENV"
+
+      - name: Deploy to droplet
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${DEPLOY_SSH_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key "root@${DEPLOY_HOST}" bash <<REMOTE
+            cd /opt/center-larp
+            export IMAGE_TAG="${IMAGE_TAG}"
+
+            # Authenticate with DOCR
+            docker login registry.digitalocean.com -u ${{ secrets.DO_API_TOKEN }} -p ${{ secrets.DO_API_TOKEN }} 2>/dev/null
+
+            # Pull new image
+            docker compose pull web worker
+
+            # Rolling restart: bring up new containers
+            docker compose up -d --remove-orphans
+
+            # Wait for health check
+            for i in \$(seq 1 30); do
+              if docker exec center-larp-web-1 curl -sf http://localhost:8000/health/live/ > /dev/null 2>&1; then
+                echo "Health check passed"
+                exit 0
+              fi
+              echo "Waiting for health check... (\$i/30)"
+              sleep 5
+            done
+
+            echo "Health check failed — rolling back"
+            docker compose down
+            IMAGE_TAG=latest docker compose up -d
+            exit 1
+          REMOTE
