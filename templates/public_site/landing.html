@@ -71,6 +71,17 @@
     {% endif %}
   </div>
 
+  {% if landing.quote_text %}
+  <div class="quote page">
+    <blockquote>
+      {{ landing.quote_text }}
+    </blockquote>
+    {% if landing.quote_cite %}
+    <cite>{{ landing.quote_cite }}</cite>
+    {% endif %}
+  </div>
+  {% endif %}
+
   <div class="cta page">
     {% if landing.cta_title %}
     <p class="cta-title">{{ landing.cta_title }}</p>

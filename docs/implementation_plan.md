@@ -6,7 +6,7 @@ This plan breaks the project into PRs targeting 500-800 lines each, following th
 
 ## Phase 0 — Foundation
 
-### PR 1: Project Scaffold & Configuration (~600-700 lines)
+### PR 1: Project Scaffold & Configuration (~600-700 lines) ✅
 
 **Branch:** `feature/project-scaffold`
 
@@ -29,7 +29,7 @@ Acceptance:
 
 ---
 
-### PR 2: Core Data Models & Migrations (~600-750 lines)
+### PR 2: Core Data Models & Migrations (~600-750 lines) ✅
 
 **Branch:** `feature/core-models`
 
@@ -53,7 +53,7 @@ Acceptance:
 
 ## Phase 1 — Public Site
 
-### PR 3: Config Loaders & Landing Page (~600-800 lines)
+### PR 3: Config Loaders & Landing Page (~600-800 lines) ✅
 
 **Branch:** `feature/landing-page`
 
@@ -73,7 +73,7 @@ Acceptance:
 
 ---
 
-### PR 4: Application Form & Submission Flow (~600-800 lines)
+### PR 4: Application Form & Submission Flow (~600-800 lines) ✅
 
 **Branch:** `feature/application-form`
 
@@ -98,7 +98,7 @@ Acceptance:
 
 ## Phase 2 — GM Workflow
 
-### PR 5: Admin Customization & Audit Logging (~500-700 lines)
+### PR 5: Admin Customization & Audit Logging (~500-700 lines) ✅
 
 **Branch:** `feature/gm-workflow`
 
@@ -119,9 +119,36 @@ Acceptance:
 
 ---
 
-## Phase 3 — Payments
+## Phase 3 — Deployment (Early)
 
-### PR 6: Cardcom Integration — Payment Creation & Webhook (~600-800 lines)
+### PR 6: Infrastructure & Initial Deployment (~400-600 lines)
+
+**Branch:** `feature/infra-deployment`
+
+Deliverables:
+- Droplet provisioning (`s-1vcpu-2gb`, fra1, default-fra1 VPC) via DO MCP or doctl
+- `center_larp` database + dedicated user on existing managed PG cluster
+- DNS: DigitalOcean A record for `center.larp.co.il` pointing to droplet public IP
+- SSL via Let's Encrypt (certbot on nginx)
+- Docker image build + push to DigitalOcean Container Registry (`registry.digitalocean.com/praxiscode/center-larp`)
+- `ops/docker-compose.prod.yml` — production compose file using `image:` from DOCR
+- Finalized `ops/nginx.center.larp.co.il.conf` with SSL + reverse proxy
+- `ops/.env.example` updated with all current production variables
+- GitHub secrets configured for deployment credentials
+- Manual deploy (SSH + docker compose pull + up)
+
+Acceptance:
+- `https://center.larp.co.il/health/live/` returns 200
+- `https://center.larp.co.il/health/ready/` returns 200 (DB connected)
+- GM admin accessible at `/gm/`
+- Public landing page renders correctly
+- Webhook URL reachable from external services
+
+---
+
+## Phase 4 — Payments
+
+### PR 7: Cardcom Integration — Payment Creation & Webhook (~600-800 lines)
 
 **Branch:** `feature/cardcom-integration`
 
@@ -144,7 +171,7 @@ Acceptance:
 
 ---
 
-### PR 7: Job Runner & Payment Verification (~500-700 lines)
+### PR 8: Job Runner & Payment Verification (~500-700 lines)
 
 **Branch:** `feature/payment-verification`
 
@@ -168,9 +195,9 @@ Acceptance:
 
 ---
 
-## Phase 4 — Billing
+## Phase 5 — Billing
 
-### PR 8: Morning Integration (~500-650 lines)
+### PR 9: Morning Integration (~500-650 lines)
 
 **Branch:** `feature/morning-integration`
 
@@ -192,9 +219,9 @@ Acceptance:
 
 ---
 
-## Phase 5 — Public Roster & Hardening
+## Phase 6 — Public Roster & Hardening
 
-### PR 9: Public Roster, Logging & CI (~500-700 lines)
+### PR 10: Public Roster, Logging & CI (~500-700 lines)
 
 **Branch:** `feature/public-roster`
 
@@ -205,7 +232,6 @@ Deliverables:
 - Alphabetical sort by display name
 - Structured JSON logging configuration in settings
 - CI config — GitHub Actions workflow (ruff, tests, migration check)
-- Finalized `ops/nginx.center.larp.co.il.conf` from example
 - Final `ops/.env.example` update
 
 Acceptance:
@@ -217,9 +243,9 @@ Acceptance:
 
 ---
 
-## Phase 6 — Deployment
+## Phase 7 — CD Automation
 
-### PR 10: CD Pipeline & DigitalOcean Deployment (~400-600 lines)
+### PR 11: CD Pipeline (~300-500 lines)
 
 **Branch:** `feature/cd-pipeline`
 
@@ -228,21 +254,12 @@ Deliverables:
   - Build Docker image, tag by immutable SHA digest (not mutable `latest`)
   - Push to DigitalOcean Container Registry (`registry.digitalocean.com/praxiscode/center-larp`)
   - SSH into droplet, pull by digest, health-check new containers, rollback on failure
-- `ops/docker-compose.prod.yml` — production compose file using `image:` from DOCR (not local `build:`)
-- Droplet provisioning (s-1vcpu-2gb, fra1, default-fra1 VPC) via DO MCP or doctl
-- `center_larp` database + dedicated user created on existing managed PG cluster
-- DNS: Cloudflare A record for `center.larp.co.il` pointing to droplet public IP
-- Finalized `ops/nginx.center.larp.co.il.conf` from example
-- Final `ops/.env.example` update with all required production variables
 - GitHub environment secrets with least-privilege, scoped credentials; use OIDC/short-lived tokens where available (e.g., DOCR); avoid persistent long-lived registry passwords
 
 Acceptance:
 - Push to `main` triggers build → push to DOCR → deploy to droplet
 - Deployment uses immutable image digest, not mutable tags
 - Failed health check triggers automatic rollback to previous image
-- `https://center.larp.co.il/health/live/` returns 200
-- `https://center.larp.co.il/health/ready/` returns 200 (DB connected)
-- GM admin accessible at `/gm/`
 - Worker container running alongside web container
 
 ---
@@ -255,25 +272,26 @@ PR 1 (scaffold)
         └─> PR 3 (config + landing)
               └─> PR 4 (form + submission)
                     └─> PR 5 (GM workflow)
-                          ├─> PR 6 (Cardcom creation + webhook)
-                          │     └─> PR 7 (job runner + verification)
-                          │           └─> PR 8 (Morning) [parallel with PR 9]
-                          └─> PR 9 (roster + hardening) [parallel with PR 8]
-                                └─> PR 10 (CD pipeline + deployment)
+                          └─> PR 6 (infra + deploy)
+                                ├─> PR 7 (Cardcom creation + webhook)
+                                │     └─> PR 8 (job runner + verification)
+                                │           └─> PR 9 (Morning) [parallel with PR 10]
+                                └─> PR 10 (roster + hardening) [parallel with PR 9]
+                                      └─> PR 11 (CD pipeline)
 ```
 
-PRs 8 and 9 are independent of each other and can be developed in parallel.
-PR 10 depends on PR 9 but can be started earlier if needed (infra provisioning is independent of app code).
+PRs 9 and 10 are independent of each other and can be developed in parallel.
+PR 6 (infra) is pulled forward to enable webhook testing for PRs 7-8.
 
 ---
 
 ## Open Items (must be resolved before relevant PR)
 
-| Item | Blocking PR | Owner |
-|------|-------------|-------|
-| Final application form questions | PR 4 | GMs |
-| Final Morning document type (320 vs 305 vs 400) | PR 8 | Accountant |
-| Live Morning API create-document request shape | PR 8 | Dev (read live docs) |
-| GM notification target (mailbox / list / chat) | PR 4 | GMs |
-| DigitalOcean API token + SSH key for deployment | PR 10 | DevOps |
-| Cloudflare API token for DNS automation | PR 10 | DevOps |
+| Item | Blocking PR | Owner | Status |
+|------|-------------|-------|--------|
+| Final application form questions | PR 4 | GMs | ✅ Resolved |
+| Final Morning document type (320 vs 305 vs 400) | PR 9 | Accountant | Open |
+| Live Morning API create-document request shape | PR 9 | Dev (read live docs) | Open |
+| GM notification target (mailbox / list / chat) | PR 4 | GMs | ✅ Resolved |
+| DigitalOcean API token + SSH key for deployment | PR 6 | DevOps | ✅ Resolved |
+| Cardcom terminal number + API credentials | PR 7 | DevOps | ✅ Resolved |

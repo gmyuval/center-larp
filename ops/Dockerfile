@@ -16,6 +16,8 @@ RUN adduser --disabled-password --gecos "" appuser
 
 COPY --chown=appuser:appuser . /app
 
+RUN mkdir -p /app/staticfiles && chown appuser:appuser /app/staticfiles
+
 USER appuser
 
 # HEALTHCHECK is defined per-service in docker-compose.yml (web only, not worker)

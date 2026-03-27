@@ -33,6 +33,8 @@ class LandingConfig(BaseModel):
     cta_title: str = ""
     cta_text: str = ""
     cta_button: str = ""
+    quote_text: str = ""
+    quote_cite: str = ""
 
 
 class FactionConfig(BaseModel):
