@@ -53,14 +53,14 @@ jobs:
             docker login registry.digitalocean.com -u ${{ secrets.DO_API_TOKEN }} -p ${{ secrets.DO_API_TOKEN }} 2>/dev/null
 
             # Pull new image
-            docker compose pull web worker
+            docker compose -f docker-compose.yml pull web worker
 
             # Rolling restart: bring up new containers
-            docker compose up -d --remove-orphans
+            docker compose -f docker-compose.yml up -d --remove-orphans
 
             # Wait for health check
             for i in \$(seq 1 30); do
-              if docker exec center-larp-web-1 curl -sf http://localhost:8000/health/live/ > /dev/null 2>&1; then
+              if docker compose -f docker-compose.yml exec -T web curl -sf http://localhost:8000/health/live/ > /dev/null 2>&1; then
                 echo "Health check passed"
                 exit 0
               fi
@@ -69,7 +69,8 @@ jobs:
             done
 
             echo "Health check failed — rolling back"
-            docker compose down
-            IMAGE_TAG=latest docker compose up -d
+            docker compose -f docker-compose.yml down
+            export IMAGE_TAG=latest
+            docker compose -f docker-compose.yml up -d
             exit 1
           REMOTE
