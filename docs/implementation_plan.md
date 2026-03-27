@@ -271,7 +271,7 @@ PR 1 (scaffold)
         └─> PR 3 (config + landing)
               └─> PR 4 (form + submission)
                     └─> PR 5 (GM workflow)
-                          └─> PR 6 (infra + deploy + CD)
+                          └─> PR 6 (infra + deploy)
                                 ├─> PR 7 (Cardcom creation + webhook)
                                 │     └─> PR 8 (job runner + verification)
                                 │           └─> PR 9 (Morning) [parallel with PR 10]

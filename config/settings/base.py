@@ -82,7 +82,8 @@ STORAGES = {
 
 EMAIL_HOST: str = env.get_str("EMAIL_HOST", "localhost")
 EMAIL_PORT: int = env.get_int("EMAIL_PORT", default=587)
-EMAIL_USE_TLS: bool = env.get_bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_TLS: bool = env.get_bool("EMAIL_USE_TLS", default=False)
+EMAIL_USE_SSL: bool = env.get_bool("EMAIL_USE_SSL", default=False)
 EMAIL_HOST_USER: str = env.get_str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD: str = env.get_str("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL: str = env.get_str("DEFAULT_FROM_EMAIL", "noreply@larp.co.il")

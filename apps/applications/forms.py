@@ -129,7 +129,7 @@ class ApplicationForm(forms.Form):
     # ------------------------------------------------------------------
 
     def clean(self) -> dict[str, Any]:
-        """Run cross-field validation: reject submissions where the honeypot is filled."""
+        """Run cross-field validation: honeypot check and faction choice dedup."""
         cleaned = super().clean()
         if cleaned is None:
             return {}
@@ -138,5 +138,10 @@ class ApplicationForm(forms.Form):
         if cleaned.get(honeypot_key):
             logger.warning("Honeypot field filled — likely spam submission")
             raise forms.ValidationError("ההגשה נדחתה.")
+
+        first = cleaned.get("faction_preference", "")
+        second = cleaned.get("faction_second_choice", "")
+        if first and second and first == second:
+            self.add_error("faction_second_choice", "הסיעה השנייה חייבת להיות שונה מהסיעה הראשונה.")
 
         return cleaned
