@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" data-theme="auto">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ form_title }} — {{ event.title }}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/design-tokens-adaptive.css' %}">
   <link rel="stylesheet" href="{% static 'css/apply.css' %}">
 </head>
 
 <body>
-  <main>
+  {% include "public_site/_header.html" %}
 
-  <section class="form-header page">
+  <div class="page-shell">
+  <main class="container-read">
+
+  <section class="form-header">
     <a href="{% url 'public_site:landing' %}" class="back-link">&larr; {{ event.title }}</a>
     <h1 class="form-title">{{ form_title }}</h1>
   </section>
 
-  <section class="form-section page">
+  <section class="form-section">
     {% if form.non_field_errors %}
     <div class="form-errors" role="alert">
       {% for error in form.non_field_errors %}
@@ -57,11 +60,14 @@
         {% endif %}
       {% endfor %}
 
-      <button type="submit" class="btn btn-submit">{{ submit_button }}</button>
+      <button type="submit" class="btn-submit">{{ submit_button }}</button>
     </form>
   </section>
 
   </main>
+  </div>
+
+  <script src="{% static 'js/theme-toggle.js' %}" defer></script>
 </body>
 
 </html>
