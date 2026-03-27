@@ -25,11 +25,13 @@ FIELD_TYPE_MAP: Final[dict[str, str]] = {
 # GM workflow state transitions
 # ---------------------------------------------------------------------------
 
+from apps.applications.models import Application  # noqa: E402
+
 # gm_status values from which an application can be approved.
-APPROVABLE_STATUSES: Final[frozenset[str]] = frozenset({"submitted"})
+APPROVABLE_STATUSES: Final[frozenset[str]] = frozenset({Application.GmStatus.SUBMITTED.value})
 
 # gm_status values from which an application can be rejected.
-REJECTABLE_STATUSES: Final[frozenset[str]] = frozenset({"submitted"})
+REJECTABLE_STATUSES: Final[frozenset[str]] = frozenset({Application.GmStatus.SUBMITTED.value})
 
 # gm_status values from which an application can be published to the public roster.
-PUBLISHABLE_STATUSES: Final[frozenset[str]] = frozenset({"approved"})
+PUBLISHABLE_STATUSES: Final[frozenset[str]] = frozenset({Application.GmStatus.APPROVED.value})
