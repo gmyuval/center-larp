@@ -263,6 +263,33 @@ Acceptance:
 
 ---
 
+---
+
+## Future — Beyond Current Plan
+
+### PR 12+: CMS for Landing Page & Event Content
+
+**Goal:** Replace the YAML-driven landing page with a full CMS so organizers can manage event content, pages, and media through a web interface without code changes or deployments.
+
+**Approach options (evaluate when starting):**
+- **Wagtail** — Django-native CMS, integrates seamlessly with existing models and admin. Provides StreamField for flexible page layouts, image management, revision history, and a rich editor UI. Recommended for Django projects that will grow.
+- **django-cms** — Alternative Django CMS with plugin architecture.
+- **Headless CMS** (Strapi, Payload) — If the frontend moves to a SPA in the future.
+
+**Scope:**
+- Migrate landing page content from YAML to CMS-managed pages
+- Event creation and editing through CMS (replaces `current_event.yaml`)
+- Application form schema editor (replaces `application_form.yaml`)
+- Media/image management for event pages
+- Multi-event support (archive past events, preview upcoming ones)
+- Page templates with reusable blocks (hero, factions, CTA, quote, etc.)
+- Draft/publish workflow with preview
+
+**Prerequisites:**
+- Current plan (PRs 7-11) should be completed first to have a stable, working registration + payment + billing pipeline.
+
+---
+
 ## Dependency Graph
 
 ```text
