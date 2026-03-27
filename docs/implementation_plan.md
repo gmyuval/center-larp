@@ -221,7 +221,7 @@ Acceptance:
 
 ## Phase 6 — Public Roster & Hardening
 
-### PR 10: Public Roster, Logging & CI (~500-700 lines)
+### PR 10: Public Roster, Mobile Responsiveness & Logging (~500-700 lines)
 
 **Branch:** `feature/public-roster`
 
@@ -230,37 +230,63 @@ Deliverables:
 - Roster template (display name always; character and faction only if toggled on)
 - Visibility rules enforced at query level (never expose paid status, email, phone, notes)
 - Alphabetical sort by display name
+- Mobile responsiveness audit and fixes across all public pages (landing, apply, thanks, roster)
 - Structured JSON logging configuration in settings
-- CI config — GitHub Actions workflow (ruff, tests, migration check)
 - Final `ops/.env.example` update
 
 Acceptance:
 - Published player shows display name; character/faction only when enabled
 - Unpublished player absent from roster
 - Paid status never visible
-- CI pipeline passes on PR
+- All public pages render correctly on mobile phones and tablets
 - Tests: E1-E5, F4 from acceptance matrix
 
 ---
 
-## Phase 7 — CD Automation
+## Phase 7 — Authentication
 
-### PR 11: CD Pipeline (~300-500 lines)
+### PR 11: Google OAuth for Admin Login (~300-400 lines)
 
-**Branch:** `feature/cd-pipeline`
+**Branch:** `feature/google-oauth`
 
 Deliverables:
-- `.github/workflows/deploy.yml` — GitHub Actions CD workflow triggered on push to `main`:
-  - Build Docker image, tag by immutable SHA digest (not mutable `latest`)
-  - Push to DigitalOcean Container Registry (`registry.digitalocean.com/praxiscode/center-larp`)
-  - SSH into droplet, pull by digest, health-check new containers, rollback on failure
-- GitHub environment secrets with least-privilege, scoped credentials; use OIDC/short-lived tokens where available (e.g., DOCR); avoid persistent long-lived registry passwords
+- `django-allauth` added to dependencies with Google OAuth provider
+- Settings configuration for allauth (Google client ID + secret from env vars)
+- URL wiring for `/accounts/` allauth routes
+- Admin login integration (GM login via Google account)
+- Authorization guardrails: only allowlisted emails (or domain) auto-granted `is_staff`; other Google accounts cannot access `/gm/`
+- Migration for allauth tables
 
 Acceptance:
-- Push to `main` triggers build → push to DOCR → deploy to droplet
-- Deployment uses immutable image digest, not mutable tags
-- Failed health check triggers automatic rollback to previous image
-- Worker container running alongside web container
+- GMs can log into `/gm/` using their Google account
+- Traditional username/password login still works as fallback
+- OAuth credentials are externalized as env vars
+- Non-approved Google accounts are denied admin access
+
+---
+
+## Future — Beyond Current Plan
+
+### PR 12+: CMS for Landing Page & Event Content
+
+**Goal:** Replace the YAML-driven landing page with a full CMS so organizers can manage event content, pages, and media through a web interface without code changes or deployments.
+
+**Approach options (evaluate when starting):**
+- **Wagtail** — Django-native CMS, integrates seamlessly with existing models and admin. Provides StreamField for flexible page layouts, image management, revision history, and a rich editor UI. Recommended for Django projects that will grow.
+- **django-cms** — Alternative Django CMS with plugin architecture.
+- **Headless CMS** (Strapi, Payload) — If the frontend moves to a SPA in the future.
+
+**Scope:**
+- Migrate landing page content from YAML to CMS-managed pages
+- Event creation and editing through CMS (replaces `current_event.yaml`)
+- Application form schema editor (replaces `application_form.yaml`)
+- Media/image management for event pages
+- Multi-event support (archive past events, preview upcoming ones)
+- Page templates with reusable blocks (hero, factions, CTA, quote, etc.)
+- Draft/publish workflow with preview
+
+**Prerequisites:**
+- Core registration, payment, and billing pipeline (PRs 7-10) should be stable before starting CMS work. Google OAuth (PR 11) is independent and not a prerequisite.
 
 ---
 
@@ -276,12 +302,12 @@ PR 1 (scaffold)
                                 ├─> PR 7 (Cardcom creation + webhook)
                                 │     └─> PR 8 (job runner + verification)
                                 │           └─> PR 9 (Morning) [parallel with PR 10]
-                                └─> PR 10 (roster + hardening) [parallel with PR 9]
-                                      └─> PR 11 (CD pipeline)
+                                ├─> PR 10 (roster + mobile + hardening) [parallel with PR 9]
+                                └─> PR 11 (Google OAuth)
 ```
 
 PRs 9 and 10 are independent of each other and can be developed in parallel.
-PR 6 (infra) is pulled forward to enable webhook testing for PRs 7-8.
+PR 11 (Google OAuth) can be done at any point after PR 6.
 
 ---
 
@@ -289,9 +315,11 @@ PR 6 (infra) is pulled forward to enable webhook testing for PRs 7-8.
 
 | Item | Blocking PR | Owner | Status |
 |------|-------------|-------|--------|
-| Final application form questions | PR 4 | GMs | ✅ Resolved |
+| Final application form questions | PR 4 | GMs | ✅ Resolved (matched to Google Form) |
 | Final Morning document type (320 vs 305 vs 400) | PR 9 | Accountant | Open |
 | Live Morning API create-document request shape | PR 9 | Dev (read live docs) | Open |
 | GM notification target (mailbox / list / chat) | PR 4 | GMs | ✅ Resolved |
 | DigitalOcean API token + SSH key for deployment | PR 6 | DevOps | ✅ Resolved |
 | Cardcom terminal number + API credentials | PR 7 | DevOps | ✅ Resolved |
+| Resend API key for email | PR 7 | DevOps | ✅ Resolved |
+| Google Cloud OAuth credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) | PR 11 | DevOps | Open — provide before PR 11 |

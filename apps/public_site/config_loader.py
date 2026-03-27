@@ -92,6 +92,7 @@ class FormFieldConfig(BaseModel):
     max_length: int | None = None
     help_text: str = ""
     rows: int | None = None
+    choices: list[str] = Field(default_factory=list)
 
 
 class SpamProtectionConfig(BaseModel):
