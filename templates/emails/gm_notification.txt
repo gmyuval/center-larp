@@ -1,0 +1,10 @@
+הרשמה חדשה התקבלה לאירוע "{{ event.title }}":
+
+שם מלא: {{ application.full_name }}
+שם תצוגה: {{ application.display_name }}
+אימייל: {{ application.email }}
+{% if application.phone %}טלפון: {{ application.phone }}
+{% endif %}
+{% for key, value in application.answers_json.items %}{% if value %}{{ key }}: {{ value }}
+{% endif %}{% endfor %}
+צפייה בהרשמה: {{ admin_url }}

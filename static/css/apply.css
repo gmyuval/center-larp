@@ -1,0 +1,170 @@
+/* Application form — extends landing.css variables and layout */
+
+.form-header {
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--cream);
+}
+
+.form-title {
+  font-family: Alef, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--cream);
+  letter-spacing: -0.01em;
+}
+
+/* Form layout */
+.form-section {
+  padding-bottom: 6rem;
+}
+
+.form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  margin-top: 2rem;
+}
+
+/* Field groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.02em;
+}
+
+.required {
+  color: var(--gold);
+  margin-right: 0.2rem;
+}
+
+/* Inputs */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--shadow);
+  border: 1px solid rgba(143, 163, 176, 0.2);
+  color: var(--cream);
+  font-family: Alef, Arial, sans-serif;
+  font-size: 0.95rem;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--gold);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Checkbox */
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin-left: 0.5rem;
+  accent-color: var(--gold);
+}
+
+/* Help text */
+.form-help {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Errors */
+.form-errors,
+.field-errors {
+  color: #d9534f;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.form-errors {
+  padding: 1rem;
+  border: 1px solid rgba(217, 83, 79, 0.3);
+  background: rgba(217, 83, 79, 0.08);
+  margin-bottom: 1rem;
+}
+
+.has-error input,
+.has-error textarea {
+  border-color: #d9534f;
+}
+
+/* Submit button */
+.btn-submit {
+  align-self: flex-start;
+  margin-top: 1rem;
+}
+
+/* Honeypot — visually hidden from humans */
+.hp-wrap {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* Thanks page */
+.thanks-section {
+  padding-top: 6rem;
+  padding-bottom: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.thanks-text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.thanks-text strong {
+  color: var(--cream);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .form-header {
+    padding-top: 2.5rem;
+  }
+
+  .form-title {
+    font-size: 1.4rem;
+  }
+}

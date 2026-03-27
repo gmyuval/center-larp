@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="he" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ form_title }} — {{ event.title }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+  <link rel="stylesheet" href="{% static 'css/apply.css' %}">
+</head>
+
+<body>
+  <main>
+
+  <section class="form-header page">
+    <a href="{% url 'public_site:landing' %}" class="back-link">&larr; {{ event.title }}</a>
+    <h1 class="form-title">{{ form_title }}</h1>
+  </section>
+
+  <section class="form-section page">
+    {% if form.non_field_errors %}
+    <div class="form-errors" role="alert">
+      {% for error in form.non_field_errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'applications:apply' %}" novalidate>
+      {% csrf_token %}
+
+      {% for field in form %}
+        {% if field.name == honeypot_field %}
+        <div class="hp-wrap" aria-hidden="true">
+          {{ field }}
+        </div>
+        {% else %}
+        <div class="form-group {% if field.errors %}has-error{% endif %}">
+          <label for="{{ field.id_for_label }}" class="form-label">
+            {{ field.label }}
+            {% if field.field.required %}<span class="required" aria-label="required">*</span>{% endif %}
+          </label>
+          {{ field }}
+          {% if field.help_text %}
+          <p class="form-help">{{ field.help_text }}</p>
+          {% endif %}
+          {% if field.errors %}
+          <div class="field-errors" role="alert">
+            {% for error in field.errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+
+      <button type="submit" class="btn btn-submit">{{ submit_button }}</button>
+    </form>
+  </section>
+
+  </main>
+</body>
+
+</html>
