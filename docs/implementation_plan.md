@@ -254,12 +254,14 @@ Deliverables:
 - Settings configuration for allauth (Google client ID + secret from env vars)
 - URL wiring for `/accounts/` allauth routes
 - Admin login integration (GM login via Google account)
+- Authorization guardrails: only allowlisted emails (or domain) auto-granted `is_staff`; other Google accounts cannot access `/gm/`
 - Migration for allauth tables
 
 Acceptance:
 - GMs can log into `/gm/` using their Google account
 - Traditional username/password login still works as fallback
 - OAuth credentials are externalized as env vars
+- Non-approved Google accounts are denied admin access
 
 ---
 
