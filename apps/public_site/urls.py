@@ -6,5 +6,4 @@ app_name = "public_site"
 
 urlpatterns = [
     path("", views.LandingPageView.as_view(), name="landing"),
-    path("apply/", views.LandingPageView.as_view(), name="apply"),  # placeholder — replaced in form PR
 ]

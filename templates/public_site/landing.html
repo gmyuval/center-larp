@@ -79,7 +79,7 @@
     <p class="cta-text">{{ landing.cta_text }}</p>
     {% endif %}
     <div class="price"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</div>
-    <a href="{% url 'public_site:apply' %}" class="btn">{{ landing.cta_button }}</a>
+    <a href="{% url 'applications:apply' %}" class="btn">{{ landing.cta_button }}</a>
   </div>
 
   </main>

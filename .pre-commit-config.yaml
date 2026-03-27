@@ -5,3 +5,12 @@ repos:
       - id: ruff
         args: [--fix]
       - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy type check
+        entry: bash -c 'DJANGO_SECRET_KEY=lint-only-not-for-production mypy .'
+        language: system
+        types: [python]
+        pass_filenames: false
