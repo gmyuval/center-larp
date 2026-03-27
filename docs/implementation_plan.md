@@ -320,4 +320,4 @@ PR 11 (Google OAuth) can be done at any point after PR 6.
 | DigitalOcean API token + SSH key for deployment | PR 6 | DevOps | ✅ Resolved |
 | Cardcom terminal number + API credentials | PR 7 | DevOps | ✅ Resolved |
 | Resend API key for email | PR 7 | DevOps | ✅ Resolved |
-| Google Cloud OAuth client ID + secret | PR 11 | DevOps | Open — provide before PR 11 |
+| Google Cloud OAuth credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) | PR 11 | DevOps | Open — provide before PR 11 |
