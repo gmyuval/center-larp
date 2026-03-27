@@ -45,4 +45,4 @@ class Document(models.Model):
 
     def __str__(self) -> str:
         label = self.document_number or self.vendor_document_id or "pending"
-        return f"Document {label} — {self.get_status_display()}"
+        return f"Document {label} — {self.get_status_display()}"  # pyright: ignore[reportAttributeAccessIssue]
