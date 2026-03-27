@@ -13,21 +13,26 @@ This package extends the original front-end handoff with:
 ## New key files
 
 ### Docs
+
 - `docs/Adaptive_Theme_and_Responsive_Addendum.md`
 - `docs/Mobile_Page_Blueprints.md`
 
 ### Tokens
+
 - `tokens/design-tokens-adaptive.css`
 - `tokens/design-tokens-adaptive.json`
 
 ### Examples
+
 - `examples/day-night-theme-preview.html`
 - `examples/mobile-responsive-wireframe.html`
 
 ### Snippets
+
 - `snippets/theme-toggle.js`
 
 ### Checklists
+
 - `checklists/Adaptive_Responsive_Implementation_Checklist.md`
 
 ## Recommended reading order

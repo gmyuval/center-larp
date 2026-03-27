@@ -136,6 +136,7 @@
       font-size: 1.1rem;
       color: var(--cream);
       line-height: 1.4;
+      unicode-bidi: isolate;
     }
 
     /* DIVIDER */
@@ -337,6 +338,16 @@
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .eyebrow,
+      .title,
+      .subtitle {
+        animation: none;
+        opacity: 1;
+        transform: none;
       }
     }
 
