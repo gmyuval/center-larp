@@ -14,3 +14,10 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
+
+      - id: pip-compile
+        name: pip-compile requirements
+        entry: bash -c 'pip-compile pyproject.toml -o requirements.txt --quiet --strip-extras && pip-compile pyproject.toml --extra dev -o requirements-dev.txt --quiet --strip-extras && git add requirements.txt requirements-dev.txt'
+        language: system
+        files: ^pyproject\.toml$
+        pass_filenames: false

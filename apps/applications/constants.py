@@ -2,6 +2,10 @@
 
 from typing import Final
 
+# ---------------------------------------------------------------------------
+# Form constants
+# ---------------------------------------------------------------------------
+
 # Contact fields stored as dedicated Application model columns (not in answers_json).
 CONTACT_FIELD_KEYS: Final[frozenset[str]] = frozenset({"full_name", "display_name", "email", "phone"})
 
@@ -16,3 +20,16 @@ FIELD_TYPE_MAP: Final[dict[str, str]] = {
     "checkbox": "_build_boolean_field",
     "textarea": "_build_textarea_field",
 }
+
+# ---------------------------------------------------------------------------
+# GM workflow state transitions
+# ---------------------------------------------------------------------------
+
+# gm_status values from which an application can be approved.
+APPROVABLE_STATUSES: Final[frozenset[str]] = frozenset({"submitted"})
+
+# gm_status values from which an application can be rejected.
+REJECTABLE_STATUSES: Final[frozenset[str]] = frozenset({"submitted"})
+
+# gm_status values from which an application can be published to the public roster.
+PUBLISHABLE_STATUSES: Final[frozenset[str]] = frozenset({"approved"})
