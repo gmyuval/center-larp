@@ -119,9 +119,9 @@ Acceptance:
 
 ---
 
-## Phase 3 — Deployment (Early)
+## Phase 3 — Deployment
 
-### PR 6: Infrastructure & Initial Deployment (~400-600 lines)
+### PR 6: Infrastructure & Initial Deployment (~400-600 lines) ✅
 
 **Branch:** `feature/infra-deployment`
 
@@ -146,9 +146,38 @@ Acceptance:
 
 ---
 
-## Phase 4 — Payments
+## Phase 4 — Frontend Design
 
-### PR 7: Cardcom Integration — Payment Creation & Webhook (~600-800 lines)
+### PR 7: Design System & Adaptive Theme (~700-900 lines)
+
+**Branch:** `feature/frontend-design`
+
+Reference: `docs/center_larp_frontend_handoff_adaptive/`
+
+Deliverables:
+- **Design tokens**: Implement `design-tokens-adaptive.css` with semantic token system (surfaces, text, borders, accents) for day/night/auto themes
+- **Theme toggle**: `theme-toggle.js` with localStorage persistence, `data-theme` attribute on `<html>`, system preference detection
+- **Landing page redesign**: Apply "Paper, Asphalt, and Salt" visual language from handoff — hero poster composition, ribbon/banner SVG, skyline motif, updated logistics strip, faction ledger styling, quote block, CTA section. Preserve all existing YAML-driven content.
+- **Application form redesign**: New form styling with fieldsets, identity/contact/character sections, proper input/select/textarea styles per design tokens. Preserve existing form logic and validation.
+- **Thanks page**: Styled confirmation page matching new design language
+- **Mobile responsiveness**: Mobile-first CSS with breakpoints (480/768/1024/1280px), single-column stacking, touch targets (44px min), sticky mobile CTA
+- **RTL fixes**: `unicode-bidi: isolate` for mixed-direction content, logical CSS properties
+
+Note: Apply design only — do not change existing text content, form fields, or backend logic.
+
+Acceptance:
+- Landing page matches handoff design in both day and night themes
+- Application form renders correctly with new styling, all fields functional
+- Theme toggle works (auto/day/night), persists across page loads
+- All pages pass mobile responsiveness at 360px, 390px, 430px, 768px, 1024px, 1440px
+- Existing YAML content renders unchanged
+- Accessibility: focus states visible, contrast passes WCAG AA, reduced-motion respected
+
+---
+
+## Phase 5 — Payments
+
+### PR 8: Cardcom Integration — Payment Creation & Webhook (~600-800 lines)
 
 **Branch:** `feature/cardcom-integration`
 
@@ -171,7 +200,7 @@ Acceptance:
 
 ---
 
-### PR 8: Job Runner & Payment Verification (~500-700 lines)
+### PR 9: Job Runner & Payment Verification (~500-700 lines)
 
 **Branch:** `feature/payment-verification`
 
@@ -195,9 +224,9 @@ Acceptance:
 
 ---
 
-## Phase 5 — Billing
+## Phase 6 — Billing
 
-### PR 9: Morning Integration (~500-650 lines)
+### PR 10: Morning Integration (~500-650 lines)
 
 **Branch:** `feature/morning-integration`
 
@@ -219,18 +248,17 @@ Acceptance:
 
 ---
 
-## Phase 6 — Public Roster & Hardening
+## Phase 7 — Public Roster & Hardening
 
-### PR 10: Public Roster, Mobile Responsiveness & Logging (~500-700 lines)
+### PR 11: Public Roster & Logging (~400-600 lines)
 
 **Branch:** `feature/public-roster`
 
 Deliverables:
 - `/players/` view class — queries only published applications
-- Roster template (display name always; character and faction only if toggled on)
+- Roster template styled per design handoff (display name always; character and faction only if toggled on)
 - Visibility rules enforced at query level (never expose paid status, email, phone, notes)
 - Alphabetical sort by display name
-- Mobile responsiveness audit and fixes across all public pages (landing, apply, thanks, roster)
 - Structured JSON logging configuration in settings
 - Final `ops/.env.example` update
 
@@ -238,14 +266,13 @@ Acceptance:
 - Published player shows display name; character/faction only when enabled
 - Unpublished player absent from roster
 - Paid status never visible
-- All public pages render correctly on mobile phones and tablets
 - Tests: E1-E5, F4 from acceptance matrix
 
 ---
 
-## Phase 7 — Authentication
+## Phase 8 — Authentication
 
-### PR 11: Google OAuth for Admin Login (~300-400 lines)
+### PR 12: Google OAuth for Admin Login (~300-400 lines)
 
 **Branch:** `feature/google-oauth`
 
@@ -267,7 +294,7 @@ Acceptance:
 
 ## Future — Beyond Current Plan
 
-### PR 12+: CMS for Landing Page & Event Content
+### PR 13+: CMS for Landing Page & Event Content
 
 **Goal:** Replace the YAML-driven landing page with a full CMS so organizers can manage event content, pages, and media through a web interface without code changes or deployments.
 
@@ -286,7 +313,7 @@ Acceptance:
 - Draft/publish workflow with preview
 
 **Prerequisites:**
-- Core registration, payment, and billing pipeline (PRs 7-10) should be stable before starting CMS work. Google OAuth (PR 11) is independent and not a prerequisite.
+- Core registration, payment, and billing pipeline (PRs 8-11) should be stable before starting CMS work. Google OAuth (PR 12) is independent and not a prerequisite.
 
 ---
 
@@ -299,15 +326,17 @@ PR 1 (scaffold)
               └─> PR 4 (form + submission)
                     └─> PR 5 (GM workflow)
                           └─> PR 6 (infra + deploy)
-                                ├─> PR 7 (Cardcom creation + webhook)
-                                │     └─> PR 8 (job runner + verification)
-                                │           └─> PR 9 (Morning) [parallel with PR 10]
-                                ├─> PR 10 (roster + mobile + hardening) [parallel with PR 9]
-                                └─> PR 11 (Google OAuth)
+                                ├─> PR 7 (frontend design + adaptive theme)
+                                │     ├─> PR 8 (Cardcom creation + webhook)
+                                │     │     └─> PR 9 (job runner + verification)
+                                │     │           └─> PR 10 (Morning) [parallel with PR 11]
+                                │     └─> PR 11 (roster + hardening) [parallel with PR 10]
+                                └─> PR 12 (Google OAuth)
 ```
 
-PRs 9 and 10 are independent of each other and can be developed in parallel.
-PR 11 (Google OAuth) can be done at any point after PR 6.
+PRs 10 and 11 are independent of each other and can be developed in parallel.
+PR 12 (Google OAuth) can be done at any point after PR 6.
+PR 7 (frontend design) should land before payment pages (PR 8-9) so those pages use the new design system.
 
 ---
 
@@ -316,10 +345,10 @@ PR 11 (Google OAuth) can be done at any point after PR 6.
 | Item | Blocking PR | Owner | Status |
 |------|-------------|-------|--------|
 | Final application form questions | PR 4 | GMs | ✅ Resolved (matched to Google Form) |
-| Final Morning document type (320 vs 305 vs 400) | PR 9 | Accountant | Open |
-| Live Morning API create-document request shape | PR 9 | Dev (read live docs) | Open |
+| Final Morning document type (320 vs 305 vs 400) | PR 10 | Accountant | Open |
+| Live Morning API create-document request shape | PR 10 | Dev (read live docs) | Open |
 | GM notification target (mailbox / list / chat) | PR 4 | GMs | ✅ Resolved |
 | DigitalOcean API token + SSH key for deployment | PR 6 | DevOps | ✅ Resolved |
-| Cardcom terminal number + API credentials | PR 7 | DevOps | ✅ Resolved |
-| Resend API key for email | PR 7 | DevOps | ✅ Resolved |
-| Google Cloud OAuth credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) | PR 11 | DevOps | Open — provide before PR 11 |
+| Cardcom terminal number + API credentials | PR 8 | DevOps | ✅ Resolved |
+| Resend API key for email | PR 8 | DevOps | ✅ Resolved |
+| Google Cloud OAuth credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) | PR 12 | DevOps | Open — provide before PR 12 |
