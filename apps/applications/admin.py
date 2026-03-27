@@ -140,6 +140,10 @@ class ApplicationAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = (
+        "gm_status",
+        "is_publicly_published",
+        "show_character_publicly",
+        "show_faction_publicly",
         "public_id",
         "answers_json",
         "form_version",
@@ -172,12 +176,13 @@ class ApplicationAdmin(admin.ModelAdmin):
     @admin.action(description="Approve selected applications")
     def action_approve(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Transition selected applications from submitted to approved."""
-        eligible = queryset.filter(gm_status__in=APPROVABLE_STATUSES)
-        skipped = queryset.count() - eligible.count()
+        initial_count = queryset.count()
         now = timezone.now()
 
         with transaction.atomic():
+            eligible = queryset.select_for_update().filter(gm_status__in=APPROVABLE_STATUSES)
             for application in eligible:
+                previous_status = application.gm_status
                 application.gm_status = Application.GmStatus.APPROVED
                 application.approved_at = now
                 application.save(update_fields=["gm_status", "approved_at", "updated_at"])
@@ -185,10 +190,11 @@ class ApplicationAdmin(admin.ModelAdmin):
                     request=request,
                     action="approve",
                     target=application,
-                    details={"previous_status": "submitted"},
+                    details={"previous_status": previous_status},
                 )
+            updated = eligible.count()
 
-        updated = eligible.count()
+        skipped = initial_count - updated
         if updated:
             self.message_user(request, f"{updated} application(s) approved.", messages.SUCCESS)
         if skipped:
@@ -201,12 +207,13 @@ class ApplicationAdmin(admin.ModelAdmin):
     @admin.action(description="Reject selected applications")
     def action_reject(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Transition selected applications from submitted to rejected."""
-        eligible = queryset.filter(gm_status__in=REJECTABLE_STATUSES)
-        skipped = queryset.count() - eligible.count()
+        initial_count = queryset.count()
         now = timezone.now()
 
         with transaction.atomic():
+            eligible = queryset.select_for_update().filter(gm_status__in=REJECTABLE_STATUSES)
             for application in eligible:
+                previous_status = application.gm_status
                 application.gm_status = Application.GmStatus.REJECTED
                 application.rejected_at = now
                 application.save(update_fields=["gm_status", "rejected_at", "updated_at"])
@@ -214,10 +221,11 @@ class ApplicationAdmin(admin.ModelAdmin):
                     request=request,
                     action="reject",
                     target=application,
-                    details={"previous_status": "submitted"},
+                    details={"previous_status": previous_status},
                 )
+            updated = eligible.count()
 
-        updated = eligible.count()
+        skipped = initial_count - updated
         if updated:
             self.message_user(request, f"{updated} application(s) rejected.", messages.SUCCESS)
         if skipped:
@@ -230,14 +238,14 @@ class ApplicationAdmin(admin.ModelAdmin):
     @admin.action(description="Publish selected to public roster")
     def action_publish(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Publish approved applications to the public roster."""
-        eligible = queryset.filter(
-            gm_status__in=PUBLISHABLE_STATUSES,
-            is_publicly_published=False,
-        )
-        skipped = queryset.count() - eligible.count()
+        initial_count = queryset.count()
         now = timezone.now()
 
         with transaction.atomic():
+            eligible = queryset.select_for_update().filter(
+                gm_status__in=PUBLISHABLE_STATUSES,
+                is_publicly_published=False,
+            )
             for application in eligible:
                 application.is_publicly_published = True
                 application.published_at = now
@@ -247,8 +255,9 @@ class ApplicationAdmin(admin.ModelAdmin):
                     action="publish",
                     target=application,
                 )
+            updated = eligible.count()
 
-        updated = eligible.count()
+        skipped = initial_count - updated
         if updated:
             self.message_user(request, f"{updated} application(s) published.", messages.SUCCESS)
         if skipped:
@@ -261,10 +270,10 @@ class ApplicationAdmin(admin.ModelAdmin):
     @admin.action(description="Unpublish selected from public roster")
     def action_unpublish(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Remove selected applications from the public roster."""
-        eligible = queryset.filter(is_publicly_published=True)
-        skipped = queryset.count() - eligible.count()
+        initial_count = queryset.count()
 
         with transaction.atomic():
+            eligible = queryset.select_for_update().filter(is_publicly_published=True)
             for application in eligible:
                 application.is_publicly_published = False
                 application.save(update_fields=["is_publicly_published", "updated_at"])
@@ -273,8 +282,9 @@ class ApplicationAdmin(admin.ModelAdmin):
                     action="unpublish",
                     target=application,
                 )
+            updated = eligible.count()
 
-        updated = eligible.count()
+        skipped = initial_count - updated
         if updated:
             self.message_user(request, f"{updated} application(s) unpublished.", messages.SUCCESS)
         if skipped:
@@ -332,15 +342,16 @@ class ApplicationAdmin(admin.ModelAdmin):
         """Toggle a boolean visibility field and log an audit entry for each change."""
         action_label = f"set_{field}={'on' if value else 'off'}"
         count = 0
-        for application in queryset:
-            if getattr(application, field) != value:
-                setattr(application, field, value)
-                application.save(update_fields=[field, "updated_at"])
-                AuditService.log_gm_action(
-                    request=request,
-                    action=action_label,
-                    target=application,
-                    details={field: value},
-                )
-                count += 1
+        with transaction.atomic():
+            for application in queryset.select_for_update():
+                if getattr(application, field) != value:
+                    setattr(application, field, value)
+                    application.save(update_fields=[field, "updated_at"])
+                    AuditService.log_gm_action(
+                        request=request,
+                        action=action_label,
+                        target=application,
+                        details={field: value},
+                    )
+                    count += 1
         return count
