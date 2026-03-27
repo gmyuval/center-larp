@@ -1,0 +1,93 @@
+name: Preview Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      rollback:
+        description: 'Set to "true" to rollback to pre-preview image'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Preview Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_API_TOKEN }}
+
+      - name: Authenticate with DOCR
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Rollback if requested
+        if: inputs.rollback == 'true'
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${DEPLOY_SSH_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key "root@${DEPLOY_HOST}" bash <<'REMOTE'
+            cd /opt/center-larp
+            echo "${{ secrets.DO_API_TOKEN }}" | docker login registry.digitalocean.com -u _ --password-stdin 2>/dev/null
+            export IMAGE_TAG=pre-preview
+            docker compose -f docker-compose.yml pull web worker
+            docker compose -f docker-compose.yml up -d --remove-orphans
+          REMOTE
+          echo "Rolled back to pre-preview image"
+
+      - name: Build, tag rollback, and deploy preview
+        if: inputs.rollback != 'true'
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          IMAGE=registry.digitalocean.com/praxiscode/center-larp
+
+          # Tag current latest as rollback point
+          docker pull "${IMAGE}:latest" || true
+          docker tag "${IMAGE}:latest" "${IMAGE}:pre-preview" 2>/dev/null || true
+          docker push "${IMAGE}:pre-preview" 2>/dev/null || true
+
+          # Build and push preview
+          PREVIEW_TAG="preview-${GITHUB_SHA::8}"
+          docker build -f ops/Dockerfile -t "${IMAGE}:${PREVIEW_TAG}" -t "${IMAGE}:latest" .
+          docker push "${IMAGE}:${PREVIEW_TAG}"
+          docker push "${IMAGE}:latest"
+
+          # Deploy to droplet
+          mkdir -p ~/.ssh
+          echo "${DEPLOY_SSH_KEY}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${DEPLOY_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key "root@${DEPLOY_HOST}" bash <<REMOTE
+            cd /opt/center-larp
+            echo "${{ secrets.DO_API_TOKEN }}" | docker login registry.digitalocean.com -u _ --password-stdin 2>/dev/null
+            export IMAGE_TAG=${PREVIEW_TAG}
+            docker compose -f docker-compose.yml pull web worker
+            docker compose -f docker-compose.yml up -d --remove-orphans
+
+            # Wait for health
+            for i in \$(seq 1 30); do
+              if docker compose -f docker-compose.yml exec -T web curl -sf http://localhost:8000/health/live/ > /dev/null 2>&1; then
+                echo "Health check passed"
+                exit 0
+              fi
+              echo "Waiting... (\$i/30)"
+              sleep 5
+            done
+            echo "Health check failed"
+            exit 1
+          REMOTE
