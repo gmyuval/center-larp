@@ -6,6 +6,7 @@ inlines for payment attempts and documents, and audit logging.
 """
 
 from django.contrib import admin, messages
+from django.db import transaction
 from django.db.models import QuerySet
 from django.http import HttpRequest
 from django.utils import timezone
@@ -175,16 +176,17 @@ class ApplicationAdmin(admin.ModelAdmin):
         skipped = queryset.count() - eligible.count()
         now = timezone.now()
 
-        for application in eligible:
-            application.gm_status = Application.GmStatus.APPROVED
-            application.approved_at = now
-            application.save(update_fields=["gm_status", "approved_at", "updated_at"])
-            AuditService.log_gm_action(
-                request=request,
-                action="approve",
-                target=application,
-                details={"previous_status": "submitted"},
-            )
+        with transaction.atomic():
+            for application in eligible:
+                application.gm_status = Application.GmStatus.APPROVED
+                application.approved_at = now
+                application.save(update_fields=["gm_status", "approved_at", "updated_at"])
+                AuditService.log_gm_action(
+                    request=request,
+                    action="approve",
+                    target=application,
+                    details={"previous_status": "submitted"},
+                )
 
         updated = eligible.count()
         if updated:
@@ -203,16 +205,17 @@ class ApplicationAdmin(admin.ModelAdmin):
         skipped = queryset.count() - eligible.count()
         now = timezone.now()
 
-        for application in eligible:
-            application.gm_status = Application.GmStatus.REJECTED
-            application.rejected_at = now
-            application.save(update_fields=["gm_status", "rejected_at", "updated_at"])
-            AuditService.log_gm_action(
-                request=request,
-                action="reject",
-                target=application,
-                details={"previous_status": "submitted"},
-            )
+        with transaction.atomic():
+            for application in eligible:
+                application.gm_status = Application.GmStatus.REJECTED
+                application.rejected_at = now
+                application.save(update_fields=["gm_status", "rejected_at", "updated_at"])
+                AuditService.log_gm_action(
+                    request=request,
+                    action="reject",
+                    target=application,
+                    details={"previous_status": "submitted"},
+                )
 
         updated = eligible.count()
         if updated:
@@ -234,15 +237,16 @@ class ApplicationAdmin(admin.ModelAdmin):
         skipped = queryset.count() - eligible.count()
         now = timezone.now()
 
-        for application in eligible:
-            application.is_publicly_published = True
-            application.published_at = now
-            application.save(update_fields=["is_publicly_published", "published_at", "updated_at"])
-            AuditService.log_gm_action(
-                request=request,
-                action="publish",
-                target=application,
-            )
+        with transaction.atomic():
+            for application in eligible:
+                application.is_publicly_published = True
+                application.published_at = now
+                application.save(update_fields=["is_publicly_published", "published_at", "updated_at"])
+                AuditService.log_gm_action(
+                    request=request,
+                    action="publish",
+                    target=application,
+                )
 
         updated = eligible.count()
         if updated:
@@ -260,14 +264,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         eligible = queryset.filter(is_publicly_published=True)
         skipped = queryset.count() - eligible.count()
 
-        for application in eligible:
-            application.is_publicly_published = False
-            application.save(update_fields=["is_publicly_published", "updated_at"])
-            AuditService.log_gm_action(
-                request=request,
-                action="unpublish",
-                target=application,
-            )
+        with transaction.atomic():
+            for application in eligible:
+                application.is_publicly_published = False
+                application.save(update_fields=["is_publicly_published", "updated_at"])
+                AuditService.log_gm_action(
+                    request=request,
+                    action="unpublish",
+                    target=application,
+                )
 
         updated = eligible.count()
         if updated:
@@ -282,30 +287,40 @@ class ApplicationAdmin(admin.ModelAdmin):
     @admin.action(description="Show character name publicly")
     def action_show_character(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Enable public character name visibility for selected applications."""
-        updated = self._toggle_visibility(request, queryset, "show_character_publicly", True)
-        self.message_user(request, f"{updated} application(s) updated.", messages.SUCCESS)
+        self._report_toggle(request, queryset, "show_character_publicly", True)
 
     @admin.action(description="Hide character name publicly")
     def action_hide_character(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Disable public character name visibility for selected applications."""
-        updated = self._toggle_visibility(request, queryset, "show_character_publicly", False)
-        self.message_user(request, f"{updated} application(s) updated.", messages.SUCCESS)
+        self._report_toggle(request, queryset, "show_character_publicly", False)
 
     @admin.action(description="Show faction publicly")
     def action_show_faction(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Enable public faction visibility for selected applications."""
-        updated = self._toggle_visibility(request, queryset, "show_faction_publicly", True)
-        self.message_user(request, f"{updated} application(s) updated.", messages.SUCCESS)
+        self._report_toggle(request, queryset, "show_faction_publicly", True)
 
     @admin.action(description="Hide faction publicly")
     def action_hide_faction(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
         """Disable public faction visibility for selected applications."""
-        updated = self._toggle_visibility(request, queryset, "show_faction_publicly", False)
-        self.message_user(request, f"{updated} application(s) updated.", messages.SUCCESS)
+        self._report_toggle(request, queryset, "show_faction_publicly", False)
 
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+
+    def _report_toggle(
+        self,
+        request: HttpRequest,
+        queryset: QuerySet[Application],
+        field: str,
+        value: bool,
+    ) -> None:
+        """Run a visibility toggle and report the result to the GM."""
+        updated = self._toggle_visibility(request, queryset, field, value)
+        if updated:
+            self.message_user(request, f"{updated} application(s) updated.", messages.SUCCESS)
+        else:
+            self.message_user(request, "No applications needed updating.", messages.INFO)
 
     @staticmethod
     def _toggle_visibility(

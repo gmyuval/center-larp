@@ -43,4 +43,4 @@ class Job(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f"Job {self.pk} [{self.job_type}] — {self.get_status_display()}"
+        return f"Job {self.pk} [{self.job_type}] — {self.get_status_display()}"  # pyright: ignore[reportAttributeAccessIssue]

@@ -88,4 +88,4 @@ class Application(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f"{self.display_name} — {self.get_gm_status_display()}"
+        return f"{self.display_name} — {self.get_gm_status_display()}"  # pyright: ignore[reportAttributeAccessIssue]

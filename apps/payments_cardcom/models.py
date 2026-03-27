@@ -64,7 +64,7 @@ class PaymentAttempt(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f"Payment {self.public_id} — {self.get_status_display()}"
+        return f"Payment {self.public_id} — {self.get_status_display()}"  # pyright: ignore[reportAttributeAccessIssue]
 
     @property
     def is_active(self) -> bool:
