@@ -263,8 +263,6 @@ Acceptance:
 
 ---
 
----
-
 ## Future — Beyond Current Plan
 
 ### PR 12+: CMS for Landing Page & Event Content
@@ -286,7 +284,7 @@ Acceptance:
 - Draft/publish workflow with preview
 
 **Prerequisites:**
-- Current plan (PRs 7-11) should be completed first to have a stable, working registration + payment + billing pipeline.
+- Core registration, payment, and billing pipeline (PRs 7-10) should be stable before starting CMS work. Google OAuth (PR 11) is independent and not a prerequisite.
 
 ---
 
