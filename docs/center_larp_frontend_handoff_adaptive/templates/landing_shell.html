@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Center LARP - Landing shell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../tokens/design-tokens.css" />
+  <style>
+    body { margin: 0; }
+    .site-shell {
+      position: relative;
+      min-height: 100vh;
+      background: var(--color-paper);
+      color: var(--color-ink);
+    }
+
+    .hero-poster__decor {
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+
+    .hero-poster__cloud {
+      position: absolute;
+      top: 3rem;
+      width: min(16rem, 24vw);
+      opacity: .85;
+    }
+
+    .hero-poster__cloud--start { inset-inline-start: 0; }
+    .hero-poster__cloud--end { inset-inline-end: 0; }
+
+    .hero-poster__birds {
+      position: absolute;
+      top: 12rem;
+      width: min(9rem, 18vw);
+      opacity: .8;
+    }
+
+    .hero-poster__birds--start { inset-inline-start: 4rem; }
+    .hero-poster__birds--end { inset-inline-end: 4rem; }
+
+    .hero-poster__banner-note {
+      margin: 0;
+      font-size: var(--font-size-h3);
+      letter-spacing: var(--letter-spacing-banner);
+      color: var(--color-ink-soft);
+    }
+
+    .hero-poster__subtitle {
+      margin: 0;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      color: var(--color-ink-soft);
+      line-height: 1.5;
+    }
+
+    .hero-poster__meta-line {
+      margin: 0;
+      font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+      color: var(--color-ink);
+    }
+
+    .hero-poster__title {
+      max-width: 12ch;
+    }
+
+    .logistics {
+      margin-inline: auto;
+      width: min(100% - (var(--gutter) * 2), var(--container-main));
+      margin-top: calc(var(--space-8) * -0.5);
+      position: relative;
+      z-index: 2;
+    }
+
+    .logistics > article {
+      padding: var(--space-5);
+    }
+
+    .logistics h2,
+    .section-block h2 {
+      margin: 0 0 var(--space-2);
+      font-size: var(--font-size-meta);
+      letter-spacing: var(--letter-spacing-label);
+      color: var(--color-patina);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .logistics p {
+      margin: 0;
+      color: var(--color-ink);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.5;
+    }
+
+    .section-block {
+      padding-block: var(--space-8);
+    }
+
+    .section-block__header {
+      margin-bottom: var(--space-5);
+    }
+
+    .section-block__header p {
+      margin: 0;
+      color: var(--color-ink-faint);
+      font-size: var(--font-size-small);
+      line-height: 1.7;
+    }
+
+    .section-block p {
+      margin-top: 0;
+      margin-bottom: var(--space-4);
+      color: var(--color-ink-soft);
+    }
+
+    .section-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    .divider-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      color: var(--color-patina);
+      font-size: var(--font-size-meta);
+      letter-spacing: var(--letter-spacing-label);
+      margin-bottom: var(--space-6);
+    }
+
+    .divider-label::before,
+    .divider-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--color-rule);
+    }
+
+    .cta-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-5);
+      padding-block: var(--space-8) var(--space-10);
+    }
+
+    .cta-block__price {
+      font-size: clamp(2.4rem, 7vw, 4rem);
+      font-weight: var(--font-weight-black);
+      line-height: 1;
+    }
+
+    .cta-block__price small {
+      font-size: 1rem;
+      font-weight: var(--font-weight-regular);
+      color: var(--color-ink-faint);
+    }
+
+    @media (max-width: 48rem) {
+      .hero-poster__cloud,
+      .hero-poster__birds {
+        display: none;
+      }
+
+      .logistics {
+        margin-top: 0;
+      }
+
+      .notice-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .cta-block {
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body class="page-grain">
+  <main class="site-shell">
+    <section class="hero-poster container--hero" aria-labelledby="landing-title">
+      <div class="hero-poster__decor" aria-hidden="true">
+        <img class="hero-poster__cloud hero-poster__cloud--start" src="../references/poster_reference.jpeg" alt="" hidden />
+        <img class="hero-poster__cloud hero-poster__cloud--end" src="../references/poster_reference.jpeg" alt="" hidden />
+      </div>
+
+      <div class="hero-poster__inner">
+        <!-- Replace with an SVG ribbon asset -->
+        <div class="hero-poster__banner" aria-hidden="true">
+          <svg viewBox="0 0 900 260" width="100%" role="img" aria-label="">
+            <path d="M193 219c-56 17-102 36-114 42 13-36 11-76-17-122C17 68 48 14 198 22c65 3 134 15 257 15s193-12 257-15c151-8 181 46 136 117-28 46-30 86-17 122-12-6-58-25-114-42-55-17-125-31-262-31s-207 14-262 31Z" fill="var(--color-paper-deep)" stroke="var(--color-ink)" stroke-width="3"/>
+            <path d="M248 194c37-17 91-24 207-24s170 7 207 24" fill="none" stroke="var(--color-ink)" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <p class="hero-poster__banner-note">זה יהיה המשחק הכי טוב</p>
+        <h1 id="landing-title" class="display-title hero-poster__title">בשערי זרים</h1>
+        <p class="hero-poster__subtitle">פנטזיה אורבנית בזמן מלחמה</p>
+        <p class="hero-poster__meta-line">9.4.26 | דיזינגוף סנטר</p>
+
+        <!-- Replace with clean vector skyline -->
+        <svg class="hero-poster__skyline" viewBox="0 0 1200 260" role="img" aria-label="קו רקיע של תל אביב">
+          <path d="M10 210h100l12-18h25v18h38v-32h26v32h40v-55h30v55h36v-68h26v68h42v-22h24v22h38v-80h32v80h60v-28h34v28h44v-100h22v100h28v-44h20v44h24v-60h26v60h30v-72h36v72h34v-110h18v110h34v-85h26v85h26v-64h30v64h32v-120h14v120h42v-94h28v94h36v-58h30v58h42v-152h30v152h46v-70h28v70h44" fill="none" stroke="var(--color-ink)" stroke-width="2.2" />
+          <path d="M0 230c40-6 88-10 144-11 101-3 165 7 240 7 76 0 145-10 222-10 78 0 144 9 224 10 87 1 154-11 231-11 56 0 102 4 139 10" fill="none" stroke="var(--color-ink)" stroke-width="2.2" />
+          <path d="M0 245c46-5 92-7 138-7 80 0 128 7 210 7s129-7 210-7c83 0 132 7 214 7 85 0 133-7 220-7 63 0 116 3 158 8" fill="none" stroke="var(--color-ink)" stroke-width="1.8" opacity=".6"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="logistics notice-grid" style="grid-template-columns: repeat(4, 1fr);" aria-label="פרטי האירוע">
+      <article>
+        <h2>תאריך</h2>
+        <p>9 באפריל 2026</p>
+      </article>
+      <article>
+        <h2>שעות</h2>
+        <p><bdi>17:00–23:00</bdi></p>
+      </article>
+      <article>
+        <h2>מיקום</h2>
+        <p>דיזינגוף סנטר, תל אביב</p>
+      </article>
+      <article>
+        <h2>עלות</h2>
+        <p>60 ₪</p>
+      </article>
+    </section>
+
+    <section class="section-block container">
+      <div class="section-block__header container--reading">
+        <h2 class="label">על המשחק</h2>
+      </div>
+      <div class="container--reading body-copy">
+        <p>כאן נכנס טקסט ההקדמה. הוא צריך להרגיש כמו פתיח ספרותי או מודעת תרבות, לא כמו עמוד מכירה שיווקי.</p>
+        <p>הטקסט יכול להיות מעט מסתורי, אבל חייב להישאר ברור וקריא. רצוי לשמור על פסקאות קצרות יחסית, רוחב קריאה נעים, וקצב נשימה משמעותי בין מקטעים.</p>
+        <p>זהו האזור שבו הסיפור נעשה מוחשי: העיר, ההסכמים, הקסם, והמרחב הציבורי.</p>
+      </div>
+    </section>
+
+    <section class="section-block container" aria-labelledby="factions-title">
+      <div class="divider-label">הסיעות</div>
+      <div class="section-block__header container--reading">
+        <h2 id="factions-title" class="section-title">ארבע סיעות</h2>
+        <p>מקטע זה צריך להרגיש כמו רישום ארכיוני או דף מידע מוסדי - לא כמו כרטיסי משחק.</p>
+      </div>
+
+      <div class="faction-ledger">
+        <article class="faction-ledger__row">
+          <div class="faction-ledger__glyph" aria-hidden="true">ד</div>
+          <div>
+            <h3 class="section-title" style="font-size: 1.15rem; margin-bottom: .5rem;">דיבוקים</h3>
+            <p class="body-copy">תיאור סיעה לדוגמה. שומרים על טון ספרותי, מדויק, מעט מסתורי, וקריא.</p>
+          </div>
+        </article>
+
+        <article class="faction-ledger__row">
+          <div class="faction-ledger__glyph" aria-hidden="true">ג׳</div>
+          <div>
+            <h3 class="section-title" style="font-size: 1.15rem; margin-bottom: .5rem;">ג׳ינים</h3>
+            <p class="body-copy">תיאור סיעה לדוגמה. רצוי לשמור על אורך שורות נוח ועל ריווח פנימי נדיב.</p>
+          </div>
+        </article>
+
+        <article class="faction-ledger__row">
+          <div class="faction-ledger__glyph" aria-hidden="true">ט</div>
+          <div>
+            <h3 class="section-title" style="font-size: 1.15rem; margin-bottom: .5rem;">טכנומאגים</h3>
+            <p class="body-copy">הקסם צריך להרגיש מושרש בעיר עצמה - במלאכה, בבטון, במרכז, ובתשתיות.</p>
+          </div>
+        </article>
+
+        <article class="faction-ledger__row">
+          <div class="faction-ledger__glyph" aria-hidden="true">פ</div>
+          <div>
+            <h3 class="section-title" style="font-size: 1.15rem; margin-bottom: .5rem;">פיות</h3>
+            <p class="body-copy">טון חזותי: פיוטי, מקומי, אורבני - ולא פנטזיית יער קלאסית.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-block container">
+      <div class="container--reading quote-block">
+        <blockquote>"כאן נכנס ציטוט ספרותי קצר, כמעין הפסקת נשימה בין חלקי הדף."</blockquote>
+        <cite>שם הכותב · מקור</cite>
+      </div>
+    </section>
+
+    <section class="container cta-block" aria-label="הרשמה">
+      <div class="cta-block__price">60 <small>₪ לכרטיס</small></div>
+      <a class="btn" href="/apply/">הרשמה למשחק</a>
+    </section>
+  </main>
+</body>
+</html>

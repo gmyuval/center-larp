@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page Wireframe</title>
+  <link rel="stylesheet" href="../tokens/design-tokens.css">
+  <style>
+    .hero-ornaments { position: relative; }
+    .hero-ornaments::before,
+    .hero-ornaments::after {
+      content: "";
+      position: absolute;
+      top: 2rem;
+      width: 140px;
+      height: 40px;
+      border-top: 1px solid var(--line-soft);
+      border-radius: 999px;
+      opacity: .5;
+    }
+    .hero-ornaments::before { right: 8%; }
+    .hero-ornaments::after { left: 8%; }
+    .skyline-placeholder {
+      height: 180px;
+      margin-top: var(--space-2xl);
+      background:
+        linear-gradient(transparent calc(100% - 1px), var(--line-strong) 0),
+        linear-gradient(90deg, transparent 0 6%, var(--clr-ink-1) 6% 7%, transparent 7% 10%, var(--clr-ink-1) 10% 13%, transparent 13% 20%, var(--clr-ink-1) 20% 25%, transparent 25% 29%, var(--clr-ink-1) 29% 31%, transparent 31% 44%, var(--clr-ink-1) 44% 49%, transparent 49% 58%, var(--clr-ink-1) 58% 62%, transparent 62% 73%, var(--clr-ink-1) 73% 78%, transparent 78% 90%, var(--clr-ink-1) 90% 93%, transparent 93% 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 100%, 100% 68%;
+      background-position: bottom, bottom;
+      opacity: .45;
+    }
+    footer { padding-block: var(--space-2xl); color: var(--clr-ink-2); }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="section hero-poster hero-ornaments">
+      <div class="container-wide hero-stack">
+        <div class="hero-ribbon">זה יהיה המשחק הכי טוב</div>
+        <h1 class="hero-title">בשערי זרים</h1>
+        <p class="hero-subtitle">פנטזיה אורבנית בזמן מלחמה. ההסכמים הישנים תמו; העיר עודנה כותבת את עצמה במעברים, בחנויות, ובקווי האוטובוס האחרונים.</p>
+        <p class="hero-meta">9.4.26 · דיזינגוף סנטר · תל אביב</p>
+        <div class="button-row" style="justify-content:center; margin-top: var(--space-xl);">
+          <a class="btn-notice" href="#">להרשמה למשחק</a>
+          <a class="btn-outline" href="#about">לקריאת רקע</a>
+        </div>
+        <div class="skyline-placeholder" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container-main logistics-strip">
+        <div class="logistics-cell">
+          <span class="logistics-label">תאריך</span>
+          <span class="logistics-value">9 באפריל 2026</span>
+        </div>
+        <div class="logistics-cell">
+          <span class="logistics-label">שעות</span>
+          <span class="logistics-value">אחר הצהריים ועד ערב</span>
+        </div>
+        <div class="logistics-cell">
+          <span class="logistics-label">מיקום</span>
+          <span class="logistics-value">דיזינגוף סנטר, תל אביב</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container-read copy-block">
+        <span class="section-label">על המשחק</span>
+        <p>העמוד הזה צריך להרגיש כמו כרזה עירונית שהמשיכה להיכתב ביד: נייר, דיו, הסכמים, ורעש רחוק של העיר.</p>
+        <p>הטון צריך להיות ספרותי אך לא מנופח. משפטים קצרים יחסית, רווח נשימה נדיב, ועיצוב שמחזיק את הטקסט במקום להילחם בו.</p>
+        <p>האיור והדקורציה אינם העניין המרכזי — הם משמשים כהד עירוני, כמו קווי סקיצה על כרזה שנשמרה זמן רב מדי על לוח מודעות.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container-main">
+        <div class="rule-divider">הסיעות</div>
+        <div class="ledger" style="margin-top: var(--space-xl);">
+          <article class="ledger-row">
+            <div class="ledger-mark">ד</div>
+            <div>
+              <h2 class="ledger-title">דיבוקים</h2>
+              <p class="ledger-text">רשומה אחת מתוך ארבע. המבנה צריך להיות קריא, ייצוגי, ומעט ארכיוני.</p>
+            </div>
+          </article>
+          <article class="ledger-row">
+            <div class="ledger-mark">ג׳</div>
+            <div>
+              <h2 class="ledger-title">ג׳ינים</h2>
+              <p class="ledger-text">אפשר להשאיר את הסיעות כטורים של תוכן, אך התחושה חייבת להיות ״פנקס עירוני״ יותר מ״כרטיס משחק״.</p>
+            </div>
+          </article>
+          <article class="ledger-row">
+            <div class="ledger-mark">ט</div>
+            <div>
+              <h2 class="ledger-title">טכנומאגים</h2>
+              <p class="ledger-text">האקצנטים הכחולים-אפורים מספקים את שכבת העיר והמתכת. לא צריך יותר מזה.</p>
+            </div>
+          </article>
+          <article class="ledger-row">
+            <div class="ledger-mark">פ</div>
+            <div>
+              <h2 class="ledger-title">פיות</h2>
+              <p class="ledger-text">השורה האחרונה סוגרת את הבלוק ואז מאפשרת מעבר לציטוט או ל-CTA.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container-read">
+        <blockquote class="quote-block">
+          <p class="quote-text">"העיר נשארת אותה עיר, גם כשהיא מחליפה את הלב שלה."</p>
+          <cite class="quote-cite">ציטוט / שיר / הדהוד מקומי</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container-read panel-paper" style="display:grid; gap: var(--space-lg);">
+        <span class="section-label">הרשמה</span>
+        <h2 class="status-title" style="font-size: var(--fs-display-lg);">₪60</h2>
+        <p class="status-text">בלוק ההרשמה הוא המקום היחיד שבו מותר להכניס משקל ויזואלי מעט כבד יותר — עדיין בלי לאבד את הטון המודפס.</p>
+        <div class="button-row">
+          <a class="btn-notice" href="#">להגשת בקשה</a>
+          <a class="btn-outline" href="#">לשאלות נפוצות</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="container-read">
+      קישור לרוסטר · מדיניות · יצירת קשר
+    </footer>
+  </main>
+</body>
+</html>

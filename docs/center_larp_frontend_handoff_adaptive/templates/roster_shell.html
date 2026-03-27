@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Center LARP - Public roster shell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../tokens/design-tokens.css" />
+  <style>
+    body { margin: 0; }
+    main { padding-block: var(--space-8) var(--space-10); }
+    .page-header {
+      text-align: center;
+      margin-bottom: var(--space-8);
+    }
+    .page-header p {
+      margin: 0;
+      color: var(--color-ink-soft);
+    }
+    .page-header .label {
+      display: inline-block;
+      margin-bottom: var(--space-3);
+    }
+    .page-header .display-title {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      margin-bottom: var(--space-3);
+    }
+    .roster-list {
+      max-width: 42rem;
+      margin-inline: auto;
+    }
+    .roster-item__subhead {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem 1rem;
+      margin-top: var(--space-2);
+      color: var(--color-ink-soft);
+      font-size: var(--font-size-small);
+    }
+    .roster-item__note {
+      margin-top: var(--space-3);
+      color: var(--color-ink-soft);
+    }
+  </style>
+</head>
+<body class="page-grain">
+  <main class="container">
+    <header class="page-header">
+      <span class="label">רשימה ציבורית</span>
+      <h1 class="display-title">משתתפי המשחק</h1>
+      <p>הדף הציבורי נשאר שקט ומצומצם. אין כאן מידע על תשלום, ואין להציג מידע מוסתר.</p>
+    </header>
+
+    <section class="roster-list" aria-label="רשימת שחקנים">
+      <article class="roster-item">
+        <div class="roster-item__name">שם תצוגה לדוגמה</div>
+        <div class="roster-item__subhead">
+          <span>שם דמות לדוגמה</span>
+          <span>סיעה לדוגמה</span>
+        </div>
+      </article>
+
+      <article class="roster-item">
+        <div class="roster-item__name">שם תצוגה נוסף</div>
+        <div class="roster-item__subhead">
+          <span>כאן יכול להופיע רק שם הדמות</span>
+        </div>
+      </article>
+
+      <article class="roster-item">
+        <div class="roster-item__name">שם שלישי</div>
+        <p class="roster-item__note">אם אין שדות פומביים נוספים, מספיק להציג שם תצוגה בלבד.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

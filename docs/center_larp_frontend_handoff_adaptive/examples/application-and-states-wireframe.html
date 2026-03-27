@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application and States Wireframe</title>
+  <link rel="stylesheet" href="../tokens/design-tokens.css">
+  <style>
+    .stack > * + * { margin-top: var(--space-3xl); }
+    .header-mini {
+      text-align: center;
+      padding-top: var(--space-3xl);
+      padding-bottom: var(--space-xl);
+    }
+    .micro-rule {
+      height: 1px;
+      margin-top: var(--space-xl);
+      background: linear-gradient(90deg, transparent, var(--line-soft), transparent);
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell section">
+    <div class="container-main stack">
+      <section class="header-mini container-narrow">
+        <div class="hero-ribbon">טופס הרשמה</div>
+        <h1 class="hero-title" style="font-size: var(--fs-display-xl);">בקשת הצטרפות</h1>
+        <p class="hero-subtitle">העמוד הזה מצמצם את הדקורציה ומשאיר בעיקר קריאות, טופס, ותחושה של תיק הרשמה.</p>
+        <div class="micro-rule" aria-hidden="true"></div>
+      </section>
+
+      <section class="container-narrow">
+        <form class="dossier-form">
+          <label class="field">
+            <span class="field-label">שם מלא</span>
+            <input class="input" type="text">
+            <span class="field-help">ישמש ליצירת קשר ולחשבונית.</span>
+          </label>
+
+          <label class="field">
+            <span class="field-label">אימייל</span>
+            <input class="input" type="email">
+          </label>
+
+          <label class="field">
+            <span class="field-label">טלפון</span>
+            <input class="input" type="tel">
+          </label>
+
+          <label class="field">
+            <span class="field-label">שם להצגה ברוסטר</span>
+            <input class="input" type="text">
+          </label>
+
+          <label class="field">
+            <span class="field-label">תיאור קצר / רעיון לדמות</span>
+            <textarea class="textarea"></textarea>
+            <span class="field-error">דוגמת שגיאה: נא למלא לפחות כמה משפטים.</span>
+          </label>
+
+          <div class="field">
+            <span class="field-label">העדפה כללית</span>
+            <label class="choice"><input type="radio" name="pref" checked> <span>מעדיפ/ה סיעה פתוחה</span></label>
+            <label class="choice"><input type="radio" name="pref"> <span>מעדיפ/ה תפקיד חברתי</span></label>
+            <label class="choice"><input type="radio" name="pref"> <span>ללא העדפה</span></label>
+          </div>
+
+          <label class="choice">
+            <input type="checkbox" checked>
+            <span>אני מאשר/ת שישלחו אליי עדכונים על המשחק ועל התשלום במידת הצורך.</span>
+          </label>
+
+          <div class="button-row">
+            <button class="btn-notice" type="button">שליחת בקשה</button>
+            <button class="btn-outline" type="button">חזרה לעמוד הראשי</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="container-main">
+        <span class="section-label">PUBLIC ROSTER</span>
+        <div class="roster-grid" style="margin-top: var(--space-lg);">
+          <article class="roster-entry">
+            <h2 class="roster-name">רוני הדר</h2>
+            <p class="roster-line">דמות: אמיל רפאל</p>
+            <p class="roster-line">סיעה: ג׳ינים</p>
+            <p class="roster-meta">עודכן לאחרונה · 2.4.26</p>
+          </article>
+          <article class="roster-entry">
+            <h2 class="roster-name">יעל טל</h2>
+            <p class="roster-meta">הכרטיס המינימלי כשהפרטים העלילתיים עדיין לא פורסמו.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="container-main" style="display:grid; gap: var(--space-xl);">
+        <span class="section-label">PAYMENT STATES</span>
+
+        <article class="panel-status status-processing">
+          <span class="status-kicker">PAYMENT · VERIFYING</span>
+          <h2 class="status-title">התשלום התקבל ונמצא בבדיקה</h2>
+          <p class="status-text">זהו המצב הראשי לאחר החזרה מספק התשלום. יש לומר לשחקנ/ית שהמערכת בודקת את התשלום לפני אישור סופי.</p>
+          <div class="button-row" style="margin-top: var(--space-lg);">
+            <a href="#" class="btn-outline">חזרה לעמוד הראשי</a>
+          </div>
+        </article>
+
+        <article class="panel-status status-confirmed">
+          <span class="status-kicker">PAYMENT · CONFIRMED</span>
+          <h2 class="status-title">התשלום אושר</h2>
+          <p class="status-text">זהו מצב מאושר. אפשר לציין שהמסמך יישלח בנפרד ושפרטים מעודכנים יופיעו באתר לפי מדיניות הפרסום.</p>
+          <div class="button-row" style="margin-top: var(--space-lg);">
+            <a href="#" class="btn-notice">לרוסטר</a>
+            <a href="#" class="btn-outline">חזרה לעמוד הראשי</a>
+          </div>
+        </article>
+
+        <article class="panel-status status-failed">
+          <span class="status-kicker">PAYMENT · FAILED</span>
+          <h2 class="status-title">לא הושלם תשלום</h2>
+          <p class="status-text">מסר קצר, לא דרמטי, עם כפתור ברור לניסיון נוסף ונתיב ליצירת קשר במידת הצורך.</p>
+          <div class="button-row" style="margin-top: var(--space-lg);">
+            <a href="#" class="btn-notice">לנסות שוב</a>
+            <a href="#" class="btn-outline">יצירת קשר</a>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

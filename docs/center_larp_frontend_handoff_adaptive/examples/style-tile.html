@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Center LARP Style Tile</title>
+  <link rel="stylesheet" href="../tokens/design-tokens.css">
+  <style>
+    .demo-section + .demo-section { margin-top: var(--space-3xl); }
+    .demo-grid { display: grid; gap: var(--space-2xl); }
+    .kicker { color: var(--clr-rust-0); letter-spacing: 0.18em; font-size: var(--fs-micro); }
+    .hero-shadow-line { height: 180px; border-bottom: var(--border-hairline); position: relative; margin-top: var(--space-xl); }
+    .hero-shadow-line::before {
+      content: "";
+      position: absolute;
+      inset-inline: 10% 10%;
+      bottom: var(--space-lg);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--clr-ink-1), transparent);
+      opacity: .35;
+    }
+    .ref-card {
+      background: var(--clr-paper-1);
+      border: var(--border-hairline);
+      box-shadow: var(--shadow-paper);
+      padding: var(--space-lg);
+    }
+    .type-stack h1,
+    .type-stack h2,
+    .type-stack h3,
+    .type-stack p { margin: 0 0 var(--space-sm); }
+    .two-col { display: grid; grid-template-columns: 1.25fr 1fr; gap: var(--space-xl); }
+    @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page-shell section">
+    <div class="container-wide demo-grid">
+      <section class="demo-section reference-board">
+        <article class="ref-card">
+          <span class="section-label">SOURCE A</span>
+          <h2 class="ledger-title">העמוד הקיים</h2>
+          <p class="ledger-text">קצב עריכתי כהה, מבנה צר, חלוקות דקות, שורות סיעות, ציטוט ו-CTA מרוסן.</p>
+        </article>
+        <article class="ref-card">
+          <span class="section-label">SOURCE B</span>
+          <h2 class="ledger-title">הפוסטר</h2>
+          <p class="ledger-text">נייר, כותרת ממורכזת, סרט, קו רקיע, אווירת כרזה עירונית עם רישום ידני.</p>
+        </article>
+      </section>
+
+      <section class="demo-section">
+        <div class="hero-poster panel-paper">
+          <div class="hero-stack">
+            <div class="hero-ribbon">זה יהיה טכני טוב</div>
+            <h1 class="hero-title">בשערי זרים</h1>
+            <p class="hero-subtitle">פנטזיה אורבנית בזמן מלחמה — מודעת תרבות, חוזה סודי, ושקיעה מעל קו החוף.</p>
+            <p class="hero-meta">9.4.26 · דיזינגוף סנטר</p>
+            <div class="button-row" style="justify-content:center; margin-top: var(--space-xl);">
+              <a href="#" class="btn-notice">להרשמה</a>
+              <a href="#" class="btn-outline">לקריאה נוספת</a>
+            </div>
+            <div class="hero-shadow-line" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section swatches">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#f5efe5;"></div>
+          <div class="swatch-label">paper-0 · #f5efe5</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#332c26;"></div>
+          <div class="swatch-label">ink-0 · #332c26</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#71868d;"></div>
+          <div class="swatch-label">sea-0 · #71868d</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#9b6f5a;"></div>
+          <div class="swatch-label">rust-0 · #9b6f5a</div>
+        </div>
+      </section>
+
+      <section class="demo-section two-col">
+        <article class="type-stack">
+          <span class="section-label">TYPOGRAPHY</span>
+          <h1 style="font-size:var(--fs-display-xl); line-height:1;">כותרת ראשית</h1>
+          <h2 style="font-size:var(--fs-h1);">כותרת משנית</h2>
+          <h3 style="font-size:var(--fs-h2);">כותרת לרכיב</h3>
+          <p style="font-size:var(--fs-body-lg); color:var(--clr-ink-1);">טקסט פתיחה מעט גדול יותר, אווירי אך מדויק.</p>
+          <p style="font-size:var(--fs-body); color:var(--clr-ink-1);">טקסט גוף רגיל צריך להרגיש ספרותי, קריא, ושקט. לא טקסט שיווקי-מוצרי.</p>
+          <p class="small-note">מטא־דאטה, תאריכים ותוויות משתמשים בריווח אותיות עדין בלבד.</p>
+        </article>
+
+        <article class="panel-paper">
+          <div class="rule-divider">סיעות</div>
+          <div class="ledger" style="margin-top: var(--space-xl);">
+            <div class="ledger-row">
+              <div class="ledger-mark">ד</div>
+              <div>
+                <h3 class="ledger-title">דיבוקים</h3>
+                <p class="ledger-text">שורת סיעה צריכה להרגיש כמו רשומה בארכיון עירוני, לא כמו קלף פנטזיה.</p>
+              </div>
+            </div>
+            <div class="ledger-row">
+              <div class="ledger-mark">ט</div>
+              <div>
+                <h3 class="ledger-title">טכנומאגים</h3>
+                <p class="ledger-text">הדגשים נעשים דרך גבולות, קצב ומרקם – לא דרך אפקטים זוהרים.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="demo-section two-col">
+        <article class="panel-paper">
+          <span class="section-label">FORM</span>
+          <form class="dossier-form">
+            <label class="field">
+              <span class="field-label">שם מלא</span>
+              <input class="input" type="text" placeholder="למשל: נועה כהן">
+            </label>
+            <label class="field">
+              <span class="field-label">שם להצגה</span>
+              <input class="input" type="text" placeholder="השם שיופיע ברוסטר">
+            </label>
+            <label class="field">
+              <span class="field-label">רעיון לדמות</span>
+              <textarea class="textarea" placeholder="כמה שורות על הדמות או על נקודת הכניסה למשחק"></textarea>
+              <span class="field-help">השדה הזה צריך להרגיש כמו שאלת דוסייה, לא כמו טופס שיווק.</span>
+            </label>
+            <label class="choice">
+              <input type="checkbox" checked>
+              <span>אני מאשר/ת שניתן ליצור איתי קשר בנוגע למשחק.</span>
+            </label>
+            <div class="button-row">
+              <button class="btn-notice" type="button">שליחת בקשה</button>
+              <button class="btn-outline" type="button">חזרה</button>
+            </div>
+          </form>
+        </article>
+
+        <article class="demo-grid">
+          <div class="panel-status status-processing">
+            <span class="status-kicker">PROCESSING</span>
+            <h2 class="status-title">התשלום התקבל ונמצא בבדיקה</h2>
+            <p class="status-text">זהו מצב הביניים העיקרי. אין להבטיח הצלחה סופית לפני אימות השרת.</p>
+          </div>
+          <div class="panel-status status-confirmed">
+            <span class="status-kicker">CONFIRMED</span>
+            <h2 class="status-title">התשלום אושר</h2>
+            <p class="status-text">אפשר לציין שמסמך יישלח בהמשך, בלי להעמיס ויזואלית.</p>
+          </div>
+          <div class="panel-status status-failed">
+            <span class="status-kicker">FAILED</span>
+            <h2 class="status-title">לא הושלם תשלום</h2>
+            <p class="status-text">מצב הכשל רגוע, עם דרך ברורה לחזור ולנסות שוב.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="demo-section">
+        <span class="section-label">PUBLIC ROSTER</span>
+        <div class="roster-grid" style="margin-top: var(--space-lg);">
+          <article class="roster-entry">
+            <h3 class="roster-name">מיכל ברקן</h3>
+            <p class="roster-line">דמות: רותם בן־עמי</p>
+            <p class="roster-line">סיעה: טכנומאגים</p>
+            <p class="roster-meta">שדה הסטטוס הכספי לעולם לא מוצג כאן</p>
+          </article>
+          <article class="roster-entry">
+            <h3 class="roster-name">שחר דנון</h3>
+            <p class="roster-line">דמות: יוצג רק אם GM אישר/ה</p>
+            <p class="roster-meta">כאשר אין מידע גלוי, הכרטיס נשאר מינימלי</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="demo-section reference-board">
+        <article class="ref-card">
+          <span class="section-label">DO</span>
+          <ul class="ledger-text">
+            <li>נייר כבסיס</li>
+            <li>איור קווי עדין</li>
+            <li>טקסט עברי שקט ומדויק</li>
+            <li>סרגלי מידע מודפסים</li>
+            <li>CTA כמו הודעה או חותמת</li>
+          </ul>
+        </article>
+        <article class="ref-card">
+          <span class="section-label">DON'T</span>
+          <ul class="ledger-text">
+            <li>ניאון, זוהר, גליץ׳</li>
+            <li>איקונוגרפיה פנטסטית גנרית</li>
+            <li>כפתורי SaaS עגולים מדי</li>
+            <li>צללים כבדים</li>
+            <li>עודף דקורציה</li>
+          </ul>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Center LARP - Form shell</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../tokens/design-tokens.css" />
+  <style>
+    body { margin: 0; }
+    main { padding-block: var(--space-8) var(--space-10); }
+    .page-header {
+      padding-bottom: var(--space-7);
+      text-align: center;
+    }
+    .page-header p { margin: 0; color: var(--color-ink-soft); }
+    .page-header .label { display: inline-block; margin-bottom: var(--space-3); }
+    .page-header .display-title {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      margin-bottom: var(--space-3);
+    }
+    .form-shell__grid {
+      display: grid;
+      gap: var(--space-5);
+    }
+    .form-shell__grid--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      margin-top: var(--space-7);
+    }
+    .process-note {
+      font-size: var(--font-size-small);
+      color: var(--color-ink-soft);
+    }
+    textarea.field__control {
+      min-height: 8rem;
+      resize: vertical;
+    }
+    @media (max-width: 48rem) {
+      .form-shell__grid--two {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="page-grain">
+  <main class="container">
+    <header class="page-header">
+      <span class="label">טופס הרשמה</span>
+      <h1 class="display-title">הגשת מועמדות למשחק</h1>
+      <p>הטופס צריך להרגיש כמו דף רישום או תיק מועמדות, לא כמו מסך checkout.</p>
+    </header>
+
+    <form class="form-shell" action="#" method="post" novalidate>
+      <section class="form-shell__section" aria-labelledby="identity-title">
+        <h2 id="identity-title" class="section-title" style="font-size: 1.35rem;">פרטי זהות</h2>
+        <div class="form-shell__grid form-shell__grid--two">
+          <label class="field">
+            <span class="field__label">שם מלא</span>
+            <span class="field__hint">כפי שתרצו שנזהה אתכם מול ההרשמה</span>
+            <input class="field__control" type="text" name="full_name" autocomplete="name" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">שם להצגה ברוסטר</span>
+            <span class="field__hint">זהו השם שעשוי להופיע פומבית אם תאושר ההצגה שלו</span>
+            <input class="field__control" type="text" name="display_name" />
+          </label>
+        </div>
+      </section>
+
+      <section class="form-shell__section" aria-labelledby="contact-title">
+        <h2 id="contact-title" class="section-title" style="font-size: 1.35rem;">פרטי קשר</h2>
+        <div class="form-shell__grid form-shell__grid--two">
+          <label class="field">
+            <span class="field__label">אימייל</span>
+            <span class="field__hint">לשליחת עדכונים, אישור ותשלום לאחר קבלה</span>
+            <input class="field__control" type="email" name="email" autocomplete="email" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">טלפון</span>
+            <span class="field__hint">למקרה שנצטרך ליצור קשר במהירות</span>
+            <input class="field__control" type="tel" name="phone" autocomplete="tel" />
+          </label>
+        </div>
+      </section>
+
+      <section class="form-shell__section" aria-labelledby="character-title">
+        <h2 id="character-title" class="section-title" style="font-size: 1.35rem;">רעיון לדמות או כיוון משחק</h2>
+        <div class="form-shell__grid">
+          <label class="field">
+            <span class="field__label">מה מושך אתכם במשחק?</span>
+            <span class="field__hint">שמרו על אורך נוח לקריאה. זהו שדה עריכתי, לא משימה בירוקרטית.</span>
+            <textarea class="field__control" name="motivation"></textarea>
+          </label>
+
+          <label class="field">
+            <span class="field__label">רעיון ראשוני לדמות</span>
+            <span class="field__hint">שדה זה יכול להיות אופציונלי בהתאם להגדרת הטופס בפועל</span>
+            <textarea class="field__control" name="character_pitch"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section class="form-shell__section" aria-labelledby="notes-title">
+        <h2 id="notes-title" class="section-title" style="font-size: 1.35rem;">הערות וסיום</h2>
+        <div class="form-shell__grid">
+          <label class="field">
+            <span class="field__label">הערה חופשית</span>
+            <span class="field__hint">הערות נגישות, תיאום, או כל מידע רלוונטי נוסף</span>
+            <textarea class="field__control" name="notes"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button class="btn" type="submit">שליחת הטופס</button>
+        <p class="process-note">לאחר השליחה הבקשה תיבדק על ידי צוות המנחים. רק אם הבקשה תאושר יישלח קישור לתשלום.</p>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
