@@ -343,15 +343,15 @@ class ApplicationAdmin(admin.ModelAdmin):
         action_label = f"set_{field}={'on' if value else 'off'}"
         count = 0
         with transaction.atomic():
-            for application in queryset.select_for_update():
-                if getattr(application, field) != value:
-                    setattr(application, field, value)
-                    application.save(update_fields=[field, "updated_at"])
-                    AuditService.log_gm_action(
-                        request=request,
-                        action=action_label,
-                        target=application,
-                        details={field: value},
-                    )
-                    count += 1
+            eligible = queryset.exclude(**{field: value}).select_for_update()
+            for application in eligible:
+                setattr(application, field, value)
+                application.save(update_fields=[field, "updated_at"])
+                AuditService.log_gm_action(
+                    request=request,
+                    action=action_label,
+                    target=application,
+                    details={field: value},
+                )
+                count += 1
         return count
