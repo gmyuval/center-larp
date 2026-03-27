@@ -82,18 +82,18 @@ class ApplicationService:
     def _send_confirmation_email(application: Application, event_config: EventConfig) -> None:
         """Send a confirmation email to the applicant.
 
-        Failures are logged but not re-raised — the application is
+        Failures are logged but not re-raised -- the application is
         already saved, so email issues should not block the user.
         """
-        subject = f"הרשמתך התקבלה — {event_config.title}"
-        body = render_to_string(
-            "emails/applicant_confirmation.txt",
-            {
-                "application": application,
-                "event": event_config,
-            },
-        )
         try:
+            subject = f"הרשמתך התקבלה — {event_config.title}"
+            body = render_to_string(
+                "emails/applicant_confirmation.txt",
+                {
+                    "application": application,
+                    "event": event_config,
+                },
+            )
             send_mail(
                 subject=subject,
                 message=body,
@@ -102,7 +102,10 @@ class ApplicationService:
                 fail_silently=False,
             )
         except Exception:
-            logger.exception("Failed to send confirmation email to %s", application.email)
+            logger.exception(
+                "Failed to send confirmation email for application %s",
+                application.public_id,
+            )
 
     @staticmethod
     def _send_gm_notification(application: Application, event_config: EventConfig) -> None:
@@ -115,16 +118,17 @@ class ApplicationService:
             logger.warning("No GM notification recipients configured — skipping notification")
             return
 
-        subject = f"הרשמה חדשה — {application.display_name}"
-        body = render_to_string(
-            "emails/gm_notification.txt",
-            {
-                "application": application,
-                "event": event_config,
-                "admin_url": f"/gm/applications/application/{application.pk}/change/",
-            },
-        )
         try:
+            admin_url = f"{settings.APP_BASE_URL}/gm/applications/application/{application.pk}/change/"
+            subject = f"הרשמה חדשה — {application.display_name}"
+            body = render_to_string(
+                "emails/gm_notification.txt",
+                {
+                    "application": application,
+                    "event": event_config,
+                    "admin_url": admin_url,
+                },
+            )
             send_mail(
                 subject=subject,
                 message=body,
@@ -133,4 +137,7 @@ class ApplicationService:
                 fail_silently=False,
             )
         except Exception:
-            logger.exception("Failed to send GM notification for application %s", application.pk)
+            logger.exception(
+                "Failed to send GM notification for application %s",
+                application.public_id,
+            )

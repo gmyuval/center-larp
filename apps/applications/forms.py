@@ -1,7 +1,8 @@
 """Dynamic application form built at runtime from the YAML form schema."""
 
 import logging
-from typing import Any
+from collections.abc import Callable
+from typing import Any, cast
 
 from django import forms
 from django.core.validators import RegexValidator
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 phone_validator = RegexValidator(
     regex=PHONE_REGEX,
-    message="Please enter a valid phone number.",
+    message="נא להזין מספר טלפון תקין.",
 )
 
 
@@ -62,8 +63,10 @@ class ApplicationForm(forms.Form):
 
     def _create_field(self, config: FormFieldConfig) -> forms.Field:
         """Dispatch to the correct builder based on the YAML field type."""
-        builder_name = FIELD_TYPE_MAP.get(config.type, "_build_char_field")
-        builder = getattr(self, builder_name)
+        builder_name = FIELD_TYPE_MAP.get(config.type)
+        if builder_name is None:
+            raise ValueError(f"Unsupported application field type: {config.type!r}")
+        builder = cast(Callable[[FormFieldConfig], forms.Field], getattr(self, builder_name))
         return builder(config)
 
     @staticmethod
@@ -127,6 +130,6 @@ class ApplicationForm(forms.Form):
         honeypot_key = self._schema.spam_protection.honeypot_field
         if cleaned.get(honeypot_key):
             logger.warning("Honeypot field filled — likely spam submission")
-            raise forms.ValidationError("Submission rejected.")
+            raise forms.ValidationError("ההגשה נדחתה.")
 
         return cleaned

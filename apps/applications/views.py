@@ -3,12 +3,12 @@
 import logging
 from typing import Any
 
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseBase, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import FormView, TemplateView
 
 from apps.public_site.config_loader import ConfigLoader, EventConfig, FormSchemaConfig
-from apps.public_site.models import Event, EventManager
+from apps.public_site.models import Event
 
 from .forms import ApplicationForm
 from .services import ApplicationService
@@ -26,8 +26,9 @@ class ApplicationFormView(FormView):
     """
 
     template_name = "public_site/apply.html"
+    event: Event
 
-    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+    def dispatch(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponseBase:
         """Load configuration and gate access before handling the request."""
         self.event_config: EventConfig = ConfigLoader.get_event_config()
         if not self.event_config.registration_open:
@@ -35,14 +36,18 @@ class ApplicationFormView(FormView):
 
         self.form_schema: FormSchemaConfig = ConfigLoader.get_form_schema()
 
-        self.event: Event | None = EventManager.get_current()
-        if self.event is None:
+        event = Event.objects.filter(
+            slug=self.event_config.slug,
+            registration_open=True,
+        ).first()
+        if event is None:
             logger.error("No active event found in database for slug=%s", self.event_config.slug)
             return HttpResponse(
                 "Event not configured. Please contact the organizers.",
                 status=503,
                 content_type="text/plain; charset=utf-8",
             )
+        self.event = event
 
         return super().dispatch(request, *args, **kwargs)
 

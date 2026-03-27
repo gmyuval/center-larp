@@ -5,6 +5,6 @@
 אימייל: {{ application.email }}
 {% if application.phone %}טלפון: {{ application.phone }}
 {% endif %}
-{% for key, value in application.answers_json.items %}{% if value %}{{ key }}: {{ value }}
-{% endif %}{% endfor %}
+{% for key, value in application.answers_json.items %}{{ key }}: {{ value }}
+{% endfor %}
 צפייה בהרשמה: {{ admin_url }}
