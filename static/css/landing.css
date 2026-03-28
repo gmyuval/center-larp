@@ -32,12 +32,22 @@
   padding-block: var(--space-sm) clamp(2rem, 5vw, 3.5rem);
   max-width: var(--container-main);
   margin-inline: auto;
+  padding-inline: var(--space-xs);
 }
 
 /* ── Logistics 4-column grid ── */
 .meta-grid--four {
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-sm);
+  gap: var(--space-xs);
+}
+
+.meta-grid--four .card {
+  padding: var(--space-sm) var(--space-md);
+}
+
+.meta-grid--four .card__title {
+  white-space: nowrap;
+  font-size: var(--fs-body-lg);
 }
 
 /* ── Price inline (inside logistics card) ── */
