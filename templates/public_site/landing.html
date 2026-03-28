@@ -34,7 +34,7 @@
       {% for item in landing.logistics %}
       <article class="card">
         <span class="card__eyebrow">{{ item.label }}</span>
-        <p class="card__title logistics-value">{{ item.value }}</p>
+        <p class="card__title"><bdi>{{ item.value }}</bdi></p>
       </article>
       {% endfor %}
       <article class="card">

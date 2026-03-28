@@ -449,7 +449,8 @@ a {
 
 .card__title {
   margin: 0 0 0.5rem;
-  font-size: var(--fs-h2);
+  font-size: var(--fs-h1);
+  font-weight: 700;
 }
 
 .card__text,
