@@ -252,14 +252,13 @@ class ApplicationAdmin(admin.ModelAdmin):
 
         for application in eligible:
             try:
-                with transaction.atomic():
-                    CardcomService.create_payment_page(application)
-                    AuditService.log_gm_action(
-                        request=request,
-                        action="generate_payment_link",
-                        target=application,
-                    )
-                    created += 1
+                CardcomService.create_payment_page(application)
+                AuditService.log_gm_action(
+                    request=request,
+                    action="generate_payment_link",
+                    target=application,
+                )
+                created += 1
             except Exception:
                 self.message_user(
                     request,
@@ -268,7 +267,7 @@ class ApplicationAdmin(admin.ModelAdmin):
                 )
 
         if created:
-            self.message_user(request, f"{created} payment link(s) generated and sent.", messages.SUCCESS)
+            self.message_user(request, f"{created} payment link(s) generated.", messages.SUCCESS)
         if skipped:
             self.message_user(
                 request,
@@ -294,13 +293,13 @@ class ApplicationAdmin(admin.ModelAdmin):
             try:
                 with transaction.atomic():
                     CardcomService.invalidate_active_attempt(application)
-                    CardcomService.create_payment_page(application)
-                    AuditService.log_gm_action(
-                        request=request,
-                        action="resend_payment_link",
-                        target=application,
-                    )
-                    resent += 1
+                CardcomService.create_payment_page(application)
+                AuditService.log_gm_action(
+                    request=request,
+                    action="resend_payment_link",
+                    target=application,
+                )
+                resent += 1
             except Exception:
                 self.message_user(
                     request,

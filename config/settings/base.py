@@ -90,9 +90,9 @@ DEFAULT_FROM_EMAIL: str = env.get_str("DEFAULT_FROM_EMAIL", "noreply@larp.co.il"
 
 # --- Cardcom ---
 
-CARDCOM_TERMINAL_NUMBER: str = env.get_str("CARDCOM_TERMINAL_NUMBER")
-CARDCOM_API_NAME: str = env.get_str("CARDCOM_API_NAME")
-CARDCOM_API_PASSWORD: str = env.get_str("CARDCOM_API_PASSWORD")
+CARDCOM_TERMINAL_NUMBER: str = env.require("CARDCOM_TERMINAL_NUMBER")
+CARDCOM_API_NAME: str = env.require("CARDCOM_API_NAME")
+CARDCOM_API_PASSWORD: str = env.require("CARDCOM_API_PASSWORD")
 CARDCOM_LOW_PROFILE_URL: str = env.get_str(
     "CARDCOM_LOW_PROFILE_URL",
     "https://secure.cardcom.solutions/api/v11/LowProfile/Create",

@@ -37,7 +37,16 @@ class CardcomService:
         Creates a ``PaymentAttempt``, calls the Cardcom API, stores the
         vendor response, emails the player a safe payment link, and
         updates the application's payment status.
+
+        Raises ``ValueError`` if the application already has an active
+        payment attempt. Raises ``httpx.HTTPError`` on API failure.
         """
+        if PaymentAttempt.objects.filter(
+            application=application,
+            status__in=PaymentAttempt.ACTIVE_STATUSES,
+        ).exists():
+            raise ValueError(f"Application {application.public_id} already has an active payment attempt.")
+
         event_config = ConfigLoader.get_event_config()
         attempt = PaymentAttempt.objects.create(
             application=application,
@@ -60,8 +69,22 @@ class CardcomService:
             attempt.save(update_fields=["status", "updated_at"])
             raise
 
-        attempt.vendor_low_profile_id = str(data.get("LowProfileId", ""))
-        attempt.payment_url = str(data.get("Url", ""))
+        low_profile_id = str(data.get("LowProfileId", ""))
+        payment_url = str(data.get("Url", ""))
+
+        if not low_profile_id or not payment_url:
+            logger.error(
+                "Cardcom returned empty LowProfileId or Url for attempt %s: %s",
+                attempt.public_id,
+                data,
+            )
+            attempt.status = PaymentAttempt.Status.FAILED
+            attempt.raw_create_response_json = data
+            attempt.save(update_fields=["status", "raw_create_response_json", "updated_at"])
+            raise ValueError("Cardcom returned an incomplete response (missing LowProfileId or Url).")
+
+        attempt.vendor_low_profile_id = low_profile_id
+        attempt.payment_url = payment_url
         attempt.raw_create_response_json = data
         attempt.status = PaymentAttempt.Status.SENT
         attempt.sent_at = timezone.now()
@@ -75,10 +98,12 @@ class CardcomService:
             ]
         )
 
-        application.payment_status = Application.PaymentStatus.LINK_SENT
-        application.save(update_fields=["payment_status", "updated_at"])
+        email_sent = cls._send_payment_email(application, attempt, event_config)
 
-        cls._send_payment_email(application, attempt, event_config)
+        application.payment_status = (
+            Application.PaymentStatus.LINK_SENT if email_sent else Application.PaymentStatus.LINK_CREATED
+        )
+        application.save(update_fields=["payment_status", "updated_at"])
 
         return attempt
 
@@ -115,8 +140,11 @@ class CardcomService:
         application: Application,
         attempt: PaymentAttempt,
         event_config: Any,
-    ) -> None:
-        """Send the payment link email to the applicant."""
+    ) -> bool:
+        """Send the payment link email to the applicant.
+
+        Returns True if the email was sent successfully, False otherwise.
+        """
         base_url = settings.APP_BASE_URL.rstrip("/")
         pay_url = f"{base_url}/pay/{attempt.public_id}/"
 
@@ -142,6 +170,8 @@ class CardcomService:
                 "Failed to send payment link email for application %s",
                 application.public_id,
             )
+            return False
+        return True
 
     # ------------------------------------------------------------------
     # Payment verification (called by job runner in PR 9)

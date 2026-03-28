@@ -104,7 +104,7 @@ class PaymentReturnSuccessView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["status"] = "success"
         context["title"] = "תודה!"
-        context["message"] = "התשלום התקבל. נשלח אישור במייל בהקדם."
+        context["message"] = "אם התשלום הושלם בהצלחה, נשלח אישור במייל בהקדם."
         return context
 
 
