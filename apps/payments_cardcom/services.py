@@ -126,6 +126,7 @@ class CardcomService:
             "WebhookUrl": f"{base_url}/webhooks/cardcom/low-profile/",
             "Language": event_config.cardcom_language,
             "Operation": "ChargeOnly",
+            "CoinId": 1,  # ILS — explicit, don't rely on terminal defaults
             "DocTypeToCreate": 0,
             "IsRefundsSupport": "False",
             "Document": {

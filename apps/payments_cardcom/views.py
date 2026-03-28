@@ -55,9 +55,13 @@ class CardcomWebhookView(View):
     def post(self, request: HttpRequest) -> HttpResponse:
         """Handle webhook POST from Cardcom."""
         try:
-            payload: dict[str, Any] = json.loads(request.body)
-        except json.JSONDecodeError, ValueError:
+            payload = json.loads(request.body)
+        except ValueError:
             logger.warning("Cardcom webhook: invalid JSON body")
+            return HttpResponse(status=400)
+
+        if not isinstance(payload, dict):
+            logger.warning("Cardcom webhook: payload is not a JSON object")
             return HttpResponse(status=400)
 
         low_profile_id = str(payload.get("lowProfileId", payload.get("LowProfileId", "")))

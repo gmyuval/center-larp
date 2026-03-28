@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DJANGO_SECRET_KEY: lint-only-not-for-production
+      CARDCOM_TERMINAL_NUMBER: ci-dummy
+      CARDCOM_API_NAME: ci-dummy
+      CARDCOM_API_PASSWORD: ci-dummy
     steps:
       - uses: actions/checkout@v6
 
@@ -62,6 +65,9 @@ jobs:
       DJANGO_SECRET_KEY: test-secret-key-not-for-production
       DJANGO_ALLOWED_HOSTS: localhost
       APP_BASE_URL: http://localhost:8000
+      CARDCOM_TERMINAL_NUMBER: ci-dummy
+      CARDCOM_API_NAME: ci-dummy
+      CARDCOM_API_PASSWORD: ci-dummy
     steps:
       - uses: actions/checkout@v6
 
