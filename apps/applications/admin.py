@@ -14,6 +14,7 @@ from django.utils import timezone
 from apps.audit.services import AuditService
 from apps.billing_morning.models import Document
 from apps.payments_cardcom.models import PaymentAttempt
+from apps.payments_cardcom.services import CardcomService
 
 from .constants import APPROVABLE_STATUSES, PUBLISHABLE_STATUSES, REJECTABLE_STATUSES
 from .models import Application
@@ -165,6 +166,8 @@ class ApplicationAdmin(admin.ModelAdmin):
     actions = [
         "action_approve",
         "action_reject",
+        "action_generate_payment_link",
+        "action_resend_payment_link",
         "action_publish",
         "action_unpublish",
         "action_show_character",
@@ -234,6 +237,83 @@ class ApplicationAdmin(admin.ModelAdmin):
             self.message_user(
                 request,
                 f"{skipped} application(s) skipped (not in submitted status).",
+                messages.WARNING,
+            )
+
+    @admin.action(description="Generate payment link")
+    def action_generate_payment_link(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
+        """Create a Cardcom payment page and email the player."""
+        eligible = queryset.filter(
+            gm_status=Application.GmStatus.APPROVED,
+            payment_status=Application.PaymentStatus.NOT_REQUESTED,
+        )
+        skipped = queryset.count() - eligible.count()
+        created = 0
+
+        for application in eligible:
+            try:
+                with transaction.atomic():
+                    CardcomService.create_payment_page(application)
+                    AuditService.log_gm_action(
+                        request=request,
+                        action="generate_payment_link",
+                        target=application,
+                    )
+                    created += 1
+            except Exception:
+                self.message_user(
+                    request,
+                    f"Failed to create payment for {application.display_name}.",
+                    messages.ERROR,
+                )
+
+        if created:
+            self.message_user(request, f"{created} payment link(s) generated and sent.", messages.SUCCESS)
+        if skipped:
+            self.message_user(
+                request,
+                f"{skipped} application(s) skipped (not approved or already has payment).",
+                messages.WARNING,
+            )
+
+    @admin.action(description="Resend payment link (invalidates previous)")
+    def action_resend_payment_link(self, request: HttpRequest, queryset: QuerySet[Application]) -> None:
+        """Invalidate the current active attempt and create a new one."""
+        eligible = queryset.filter(
+            gm_status=Application.GmStatus.APPROVED,
+            payment_status__in=[
+                Application.PaymentStatus.LINK_CREATED,
+                Application.PaymentStatus.LINK_SENT,
+                Application.PaymentStatus.FAILED,
+            ],
+        )
+        skipped = queryset.count() - eligible.count()
+        resent = 0
+
+        for application in eligible:
+            try:
+                with transaction.atomic():
+                    CardcomService.invalidate_active_attempt(application)
+                    CardcomService.create_payment_page(application)
+                    AuditService.log_gm_action(
+                        request=request,
+                        action="resend_payment_link",
+                        target=application,
+                    )
+                    resent += 1
+            except Exception:
+                self.message_user(
+                    request,
+                    f"Failed to resend payment for {application.display_name}.",
+                    messages.ERROR,
+                )
+
+        if resent:
+            self.message_user(request, f"{resent} payment link(s) resent.", messages.SUCCESS)
+        if skipped:
+            self.message_user(
+                request,
+                f"{skipped} application(s) skipped (not eligible for resend).",
                 messages.WARNING,
             )
 
