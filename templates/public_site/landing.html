@@ -39,7 +39,7 @@
       {% endfor %}
       <article class="card">
         <span class="card__eyebrow">עלות</span>
-        <p class="card__title"><span class="price-inline"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</span></p>
+        <p class="card__title"><bdi>{{ event.currency|currency_symbol }}{{ event.price_amount|floatformat:0 }}</bdi></p>
       </article>
     </div>
   </section>

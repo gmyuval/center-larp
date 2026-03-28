@@ -50,22 +50,6 @@
   font-size: var(--fs-body-lg);
 }
 
-/* ── Price inline (inside logistics card) ── */
-.price-inline {
-  font-family: var(--font-display);
-  font-size: var(--fs-h1);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.price-inline sup {
-  font-size: var(--fs-meta);
-  font-weight: 400;
-  color: var(--text-muted);
-  vertical-align: super;
-  margin-right: 0.15rem;
-}
-
 /* ── Section labels (enlarged) ── */
 .section__label {
   font-size: var(--fs-h1);

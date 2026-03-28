@@ -61,7 +61,7 @@
 
   --container-wide: 1180px;
   --container-main: 920px;
-  --container-read: 720px;
+  --container-read: 840px;
   --container-narrow: 560px;
 
   --radius-sm: 6px;
@@ -253,7 +253,7 @@ a {
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  padding-inline: clamp(1rem, 2.8vw, 1.4rem);
+  padding-inline: clamp(0.75rem, 2vw, 1rem);
 }
 
 .container-wide,
