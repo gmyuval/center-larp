@@ -88,6 +88,20 @@ EMAIL_HOST_USER: str = env.get_str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD: str = env.get_str("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL: str = env.get_str("DEFAULT_FROM_EMAIL", "noreply@larp.co.il")
 
+# --- Cardcom ---
+
+CARDCOM_TERMINAL_NUMBER: str = env.require("CARDCOM_TERMINAL_NUMBER")
+CARDCOM_API_NAME: str = env.require("CARDCOM_API_NAME")
+CARDCOM_API_PASSWORD: str = env.require("CARDCOM_API_PASSWORD")
+CARDCOM_LOW_PROFILE_URL: str = env.get_str(
+    "CARDCOM_LOW_PROFILE_URL",
+    "https://secure.cardcom.solutions/api/v11/LowProfile/Create",
+)
+CARDCOM_GET_LP_RESULT_URL: str = env.get_str(
+    "CARDCOM_GET_LP_RESULT_URL",
+    "https://secure.cardcom.solutions/api/v11/LowProfile/GetLpResult",
+)
+
 # --- Misc ---
 
 DEFAULT_AUTO_FIELD: str = "django.db.models.BigAutoField"

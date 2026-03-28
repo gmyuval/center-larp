@@ -1,0 +1,13 @@
+שלום {{ application.full_name }},
+
+הרשמתך לאירוע "{{ event.title }}" אושרה ונשלח אליך קישור לתשלום.
+
+לתשלום לחצו כאן:
+{{ pay_url }}
+
+סכום לתשלום: {{ event.currency }} {{ event.price_amount }}
+
+{% if event.emails.public_contact_email %}אם יש לך שאלות, ניתן ליצור קשר בכתובת {{ event.emails.public_contact_email }}.
+
+{% endif %}בברכה,
+צוות {{ event.title }}

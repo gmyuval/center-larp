@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="he" dir="rtl" data-theme="auto">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} — Center LARP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Alef:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/design-tokens-adaptive.css' %}">
+  <link rel="stylesheet" href="{% static 'css/apply.css' %}">
+</head>
+
+<body>
+  {% include "public_site/_header.html" %}
+
+  <div class="page-shell">
+  <main class="container-read">
+
+  <section class="thanks-section">
+    <h1 class="form-title">{{ title }}</h1>
+    <p class="thanks-text">{{ message }}</p>
+    <a href="{% url 'public_site:landing' %}" class="btn">חזרה לעמוד הראשי</a>
+  </section>
+
+  </main>
+  </div>
+
+  <script src="{% static 'js/theme-toggle.js' %}" defer></script>
+</body>
+
+</html>
