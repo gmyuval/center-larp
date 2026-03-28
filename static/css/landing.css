@@ -13,35 +13,13 @@
   color: var(--accent-primary);
 }
 
-/* ── Hero CTA (price card + register button, centered) ── */
+/* ── Hero CTA (register button, centered) ── */
 .hero-cta {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-md);
   margin-top: var(--space-xl);
-}
-
-.price-card {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-sm) var(--space-xl);
-}
-
-.price {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 6vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-
-.price sup {
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--text-muted);
-  vertical-align: super;
-  margin-right: 0.25rem;
 }
 
 .button--lg {
@@ -54,11 +32,30 @@
   padding-block: var(--space-sm) clamp(2rem, 5vw, 3.5rem);
 }
 
-/* ── Logistics (meta-grid) ── */
+/* ── Logistics 4-column grid ── */
+.meta-grid--four {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* ── Logistics values: keep RTL, only isolate bidi for mixed content ── */
 .logistics-value {
   unicode-bidi: isolate;
-  direction: ltr;
-  text-align: start;
+}
+
+/* ── Price inline (inside logistics card) ── */
+.price-inline {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.price-inline sup {
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  color: var(--text-muted);
+  vertical-align: super;
+  margin-right: 0.15rem;
 }
 
 /* ── Section labels (enlarged) ── */
@@ -143,6 +140,10 @@
     padding-block: var(--space-xl) var(--space-md);
   }
 
+  .hero__title {
+    font-size: clamp(2.8rem, 14vw, 4rem);
+  }
+
   .hero-cta {
     width: 100%;
   }
@@ -150,6 +151,16 @@
   .hero-cta .button {
     width: 100%;
     text-align: center;
+  }
+
+  /* Logistics: stack to 1 column on mobile */
+  .meta-grid--four {
+    grid-template-columns: 1fr;
+  }
+
+  /* Factions: single column on mobile */
+  .cards--two {
+    grid-template-columns: 1fr;
   }
 
   .faction-card {
@@ -164,5 +175,12 @@
   .cta-section--bottom .button {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* ── Responsive: tablet (2 columns for logistics) ── */
+@media (min-width: 768px) {
+  .meta-grid--four {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

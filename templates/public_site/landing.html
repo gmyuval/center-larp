@@ -23,9 +23,6 @@
       <h1 id="landing-title" class="hero__title">{{ landing.title_main }}<br><span>{{ landing.title_accent }}</span></h1>
       <p class="hero__subtitle">{{ landing.subtitle }}</p>
       <div class="hero-cta">
-        <div class="price-card card">
-          <span class="price"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</span>
-        </div>
         <a href="{% url 'applications:apply' %}" class="button button--primary button--lg">{{ landing.cta_button }}</a>
       </div>
     </div>
@@ -33,13 +30,17 @@
 
   {% if landing.logistics %}
   <section class="section section--tight">
-    <div class="meta-grid" aria-label="Event details">
+    <div class="meta-grid meta-grid--four" aria-label="Event details">
       {% for item in landing.logistics %}
       <article class="card">
         <span class="card__eyebrow">{{ item.label }}</span>
         <p class="card__title logistics-value">{{ item.value }}</p>
       </article>
       {% endfor %}
+      <article class="card">
+        <span class="card__eyebrow">עלות</span>
+        <p class="card__title"><span class="price-inline"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</span></p>
+      </article>
     </div>
   </section>
   {% endif %}
@@ -92,7 +93,7 @@
   </section>
   {% endif %}
 
-  <section class="section cta-section cta-section--bottom">
+  <section class="section cta-section--bottom">
     <a href="{% url 'applications:apply' %}" class="button button--primary button--lg">{{ landing.cta_button }}</a>
   </section>
 
