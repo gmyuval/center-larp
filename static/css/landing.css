@@ -30,11 +30,14 @@
 /* ── Tight section (logistics cards close to hero) ── */
 .section--tight {
   padding-block: var(--space-sm) clamp(2rem, 5vw, 3.5rem);
+  max-width: var(--container-main);
+  margin-inline: auto;
 }
 
 /* ── Logistics 4-column grid ── */
 .meta-grid--four {
   grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
 }
 
 /* ── Price inline (inside logistics card) ── */
@@ -153,10 +156,7 @@
     text-align: center;
   }
 
-  /* Logistics: stack to 1 column on mobile */
-  .meta-grid--four {
-    grid-template-columns: 1fr;
-  }
+  /* Logistics: stack to 1 column on small mobile */
 
   /* Factions: single column on mobile */
   .cards--two {
@@ -178,7 +178,14 @@
   }
 }
 
-/* ── Responsive: tablet (2 columns for logistics) ── */
+/* ── Responsive: small mobile (1 column logistics) ── */
+@media (max-width: 479px) {
+  .meta-grid--four {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Responsive: tablet+ (4 columns for logistics) ── */
 @media (min-width: 768px) {
   .meta-grid--four {
     grid-template-columns: repeat(4, 1fr);

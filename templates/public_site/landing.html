@@ -29,8 +29,8 @@
   </section>
 
   {% if landing.logistics %}
-  <section class="section section--tight">
-    <div class="meta-grid meta-grid--four" aria-label="Event details">
+  <section class="section section--tight" aria-label="Event details">
+    <div class="meta-grid meta-grid--four">
       {% for item in landing.logistics %}
       <article class="card">
         <span class="card__eyebrow">{{ item.label }}</span>
