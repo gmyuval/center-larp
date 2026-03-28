@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ event.title }}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Alef:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/design-tokens-adaptive.css' %}">
   <link rel="stylesheet" href="{% static 'css/landing.css' %}">
 </head>
@@ -22,12 +22,17 @@
       <div class="hero__ribbon">{{ landing.eyebrow }}</div>
       <h1 id="landing-title" class="hero__title">{{ landing.title_main }}<br><span>{{ landing.title_accent }}</span></h1>
       <p class="hero__subtitle">{{ landing.subtitle }}</p>
-      <div class="hero__skyline" aria-hidden="true"></div>
+      <div class="hero-cta">
+        <div class="price-card card">
+          <span class="price"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</span>
+        </div>
+        <a href="{% url 'applications:apply' %}" class="button button--primary button--lg">{{ landing.cta_button }}</a>
+      </div>
     </div>
   </section>
 
   {% if landing.logistics %}
-  <section class="section">
+  <section class="section section--tight">
     <div class="meta-grid" aria-label="Event details">
       {% for item in landing.logistics %}
       <article class="card">
@@ -87,15 +92,8 @@
   </section>
   {% endif %}
 
-  <section class="section cta-section">
-    {% if landing.cta_title %}
-    <h2>{{ landing.cta_title }}</h2>
-    {% endif %}
-    {% if landing.cta_text %}
-    <p class="copy">{{ landing.cta_text }}</p>
-    {% endif %}
-    <div class="price"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</div>
-    <a href="{% url 'applications:apply' %}" class="button button--primary">{{ landing.cta_button }}</a>
+  <section class="section cta-section cta-section--bottom">
+    <a href="{% url 'applications:apply' %}" class="button button--primary button--lg">{{ landing.cta_button }}</a>
   </section>
 
   </main>

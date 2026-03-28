@@ -13,11 +13,45 @@
   color: var(--accent-primary);
 }
 
-.hero__skyline {
+/* ── Hero CTA (price card + register button, centered) ── */
+.hero-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
   margin-top: var(--space-xl);
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-soft), transparent);
-  opacity: 0.6;
+}
+
+.price-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-xl);
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.price sup {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  vertical-align: super;
+  margin-right: 0.25rem;
+}
+
+.button--lg {
+  padding: 1rem 2.5rem;
+  font-size: var(--fs-body-lg);
+}
+
+/* ── Tight section (logistics cards close to hero) ── */
+.section--tight {
+  padding-block: var(--space-sm) clamp(2rem, 5vw, 3.5rem);
 }
 
 /* ── Logistics (meta-grid) ── */
@@ -29,9 +63,9 @@
 
 /* ── Section labels (enlarged) ── */
 .section__label {
-  font-size: var(--fs-h2);
+  font-size: var(--fs-h1);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
 }
 
 /* ── About section ── */
@@ -76,7 +110,7 @@
 .quote-block blockquote {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
   font-style: italic;
   line-height: 1.7;
   color: var(--text-muted);
@@ -96,33 +130,26 @@
   opacity: 0.7;
 }
 
-/* ── CTA / Price ── */
-.cta-section {
+/* ── Bottom CTA ── */
+.cta-section--bottom {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-lg);
-}
-
-.price {
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 6vw, 3rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-}
-
-.price sup {
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--text-muted);
-  vertical-align: super;
-  margin-right: 0.25rem;
+  justify-content: center;
+  padding-block: var(--space-xl) var(--space-3xl);
 }
 
 /* ── Responsive: mobile ── */
 @media (max-width: 767px) {
   .hero {
     padding-block: var(--space-xl) var(--space-md);
+  }
+
+  .hero-cta {
+    width: 100%;
+  }
+
+  .hero-cta .button {
+    width: 100%;
+    text-align: center;
   }
 
   .faction-card {
@@ -134,11 +161,8 @@
     font-size: 1.6rem;
   }
 
-  .cta-section {
-    align-items: stretch;
-  }
-
-  .cta-section .button {
+  .cta-section--bottom .button {
+    width: 100%;
     text-align: center;
   }
 }
