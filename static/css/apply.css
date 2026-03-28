@@ -1,133 +1,160 @@
-/* Application form — extends landing.css variables and layout */
+/* Apply form page — extends design-tokens-adaptive.css */
 
+/* ── Page header ── */
 .form-header {
-  padding-top: 4rem;
-  padding-bottom: 2rem;
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-lg);
 }
 
 .back-link {
   display: inline-block;
-  font-size: 0.8rem;
-  color: var(--gold);
+  font-size: var(--fs-body-sm);
+  color: var(--accent-primary);
   text-decoration: none;
   letter-spacing: 0.05em;
-  margin-bottom: 2rem;
-  transition: color 0.2s ease;
+  margin-bottom: var(--space-xl);
+  transition: color var(--dur-base) var(--ease-standard);
 }
 
 .back-link:hover {
-  color: var(--cream);
+  color: var(--text-primary);
 }
 
 .form-title {
-  font-family: Alef, Arial, sans-serif;
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
   font-weight: 700;
-  font-size: 1.8rem;
-  color: var(--cream);
   letter-spacing: -0.01em;
+  margin: 0;
 }
 
-/* Form layout */
+/* ── Form layout ── */
 .form-section {
-  padding-bottom: 6rem;
+  padding-bottom: var(--space-4xl);
 }
 
 .form-section form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.8rem;
-  margin-top: 2rem;
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
 }
 
-/* Field groups */
+/* ── Field groups ── */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: grid;
+  gap: var(--space-xs);
 }
 
 .form-label {
-  font-size: 0.85rem;
+  font-size: var(--fs-body-lg);
   font-weight: 700;
-  color: var(--cream);
   letter-spacing: 0.02em;
 }
 
 .required {
-  color: var(--gold);
+  color: var(--accent-rust);
   margin-right: 0.2rem;
 }
 
-/* Inputs */
+/* ── Inputs ── */
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="tel"],
 .form-group textarea,
 .form-group select {
   width: 100%;
+  min-height: var(--tap-target-min);
   padding: 0.8rem 1rem;
-  background: var(--shadow);
-  border: 1px solid rgba(143, 163, 176, 0.2);
-  color: var(--cream);
-  font-family: Alef, Arial, sans-serif;
-  font-size: 0.95rem;
-  border-radius: 0;
+  background: color-mix(in srgb, var(--surface-card-soft) 94%, transparent);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--fs-body);
+  border-radius: var(--radius-sm);
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--dur-base) var(--ease-standard);
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  border-color: var(--gold);
+.form-group input:focus-visible,
+.form-group textarea:focus-visible,
+.form-group select:focus-visible {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 5rem;
 }
 
-/* Checkbox */
+/* ── Checkbox ── */
 .form-group input[type="checkbox"] {
   width: auto;
-  margin-left: 0.5rem;
-  accent-color: var(--gold);
+  min-height: auto;
+  margin-left: var(--space-xs);
+  accent-color: var(--accent-primary);
 }
 
-/* Help text */
+/* ── Help text ── */
 .form-help {
-  font-size: 0.78rem;
-  color: var(--muted);
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
-/* Errors */
+/* ── Errors ── */
 .form-errors,
 .field-errors {
-  color: #d9534f;
-  font-size: 0.82rem;
+  color: var(--status-error);
+  font-size: var(--fs-body-sm);
   line-height: 1.5;
 }
 
 .form-errors {
-  padding: 1rem;
-  border: 1px solid rgba(217, 83, 79, 0.3);
-  background: rgba(217, 83, 79, 0.08);
-  margin-bottom: 1rem;
+  padding: var(--space-md);
+  border: 1px solid color-mix(in srgb, var(--status-error) 30%, transparent);
+  background: color-mix(in srgb, var(--status-error) 8%, transparent);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-md);
 }
 
 .has-error input,
-.has-error textarea {
-  border-color: #d9534f;
+.has-error textarea,
+.has-error select {
+  border-color: var(--status-error);
 }
 
-/* Submit button */
+/* ── Submit button ── */
 .btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-target-min);
+  padding: 0.9rem 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface-contrast) 92%, transparent);
+  color: var(--text-on-contrast);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-base) var(--ease-standard);
   align-self: flex-start;
-  margin-top: 1rem;
+  margin-top: var(--space-md);
 }
 
-/* Honeypot — visually hidden from humans */
+.btn-submit:hover {
+  transform: translateY(-1px);
+}
+
+.btn-submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+/* ── Honeypot — visually hidden from humans ── */
 .hp-wrap {
   position: absolute;
   left: -9999px;
@@ -138,33 +165,59 @@
   opacity: 0;
 }
 
-/* Thanks page */
+/* ── Thanks page ── */
 .thanks-section {
-  padding-top: 6rem;
-  padding-bottom: 8rem;
+  padding-top: var(--space-4xl);
+  padding-bottom: var(--space-4xl);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: var(--space-lg);
 }
 
 .thanks-text {
-  font-size: 0.95rem;
+  font-size: var(--fs-body);
   line-height: 1.8;
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 
 .thanks-text strong {
-  color: var(--cream);
+  color: var(--text-primary);
 }
 
-/* Responsive */
-@media (max-width: 500px) {
+.thanks-section .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-target-min);
+  padding: 0.9rem 1.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: color-mix(in srgb, var(--surface-card) 92%, transparent);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  transition:
+    transform var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-base) var(--ease-standard);
+}
+
+.thanks-section .btn:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Responsive: mobile ── */
+@media (max-width: 767px) {
   .form-header {
-    padding-top: 2.5rem;
+    padding-top: var(--space-xl);
   }
 
   .form-title {
-    font-size: 1.4rem;
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
+  }
+
+  .btn-submit {
+    align-self: stretch;
+    text-align: center;
   }
 }

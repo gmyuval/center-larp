@@ -1,99 +1,106 @@
 <!DOCTYPE html>
 {% load static currency_tags %}
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" data-theme="auto">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ event.title }}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Alef:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/design-tokens-adaptive.css' %}">
   <link rel="stylesheet" href="{% static 'css/landing.css' %}">
 </head>
 
 <body>
-  <main>
+  {% include "public_site/_header.html" %}
 
-  <section class="hero">
-    <p class="eyebrow">{{ landing.eyebrow }}</p>
-    <h1 class="title">{{ landing.title_main }}<br><span>{{ landing.title_accent }}</span></h1>
-    <p class="subtitle">{{ landing.subtitle }}</p>
+  <div class="page-shell">
+  <main class="container-read">
+
+  <section class="hero" aria-labelledby="landing-title">
+    <div class="hero__stack">
+      <div class="hero__ribbon">{{ landing.eyebrow }}</div>
+      <h1 id="landing-title" class="hero__title">{{ landing.title_main }}<br><span>{{ landing.title_accent }}</span></h1>
+      <p class="hero__subtitle">{{ landing.subtitle }}</p>
+      <div class="hero-cta">
+        <a href="{% url 'applications:apply' %}" class="button button--primary button--lg">{{ landing.cta_button }}</a>
+      </div>
+    </div>
   </section>
 
   {% if landing.logistics %}
-  <div class="logistics">
-    {% for item in landing.logistics %}
-    <div>
-      <span class="logistics-label">{{ item.label }}</span>
-      <span class="logistics-value">{{ item.value }}</span>
+  <section class="section section--tight" aria-label="Event details">
+    <div class="meta-grid meta-grid--four">
+      {% for item in landing.logistics %}
+      <article class="card">
+        <span class="card__eyebrow">{{ item.label }}</span>
+        <p class="card__title"><bdi>{{ item.value }}</bdi></p>
+      </article>
+      {% endfor %}
+      <article class="card">
+        <span class="card__eyebrow">עלות</span>
+        <p class="card__title"><bdi>{{ event.currency|currency_symbol }}{{ event.price_amount|floatformat:0 }}</bdi></p>
+      </article>
     </div>
-    {% endfor %}
-  </div>
+  </section>
   {% endif %}
 
-  <div class="about page">
+  <section class="section about-section">
     {% if landing.about_title %}
-    <p class="section-title"><em>{{ landing.about_title }}</em></p>
+    <span class="section__label">{{ landing.about_title }}</span>
     {% endif %}
 
     {% for paragraph in landing.about_paragraphs %}
-    <p>{{ paragraph }}</p>
+    <p class="copy">{{ paragraph }}</p>
     {% endfor %}
+  </section>
 
-    {% if factions %}
-    <div>
-      {% if landing.divider_label %}
-      <div class="divider">{{ landing.divider_label }}</div>
+  {% if factions %}
+    {% if landing.divider_label %}
+    <div class="rule">{{ landing.divider_label }}</div>
+    {% endif %}
+
+    <section class="section" aria-labelledby="factions-title">
+      {% if landing.factions_intro_title %}
+      <span id="factions-title" class="section__label">{{ landing.factions_intro_title }}</span>
+      {% endif %}
+      {% if landing.factions_intro_text %}
+      <p class="copy">{{ landing.factions_intro_text }}</p>
       {% endif %}
 
-      {% if landing.factions_intro_title or landing.factions_intro_text %}
-      <div class="factions-intro page">
-        {% if landing.factions_intro_title %}
-        <p class="section-title">{{ landing.factions_intro_title }}</p>
-        {% endif %}
-        {% if landing.factions_intro_text %}
-        <p>{{ landing.factions_intro_text }}</p>
-        {% endif %}
-      </div>
-      {% endif %}
-
-      <div class="factions">
+      <div class="cards cards--two">
         {% for faction in factions %}
-        <div class="faction">
-          <div class="faction-glyph" aria-hidden="true">{{ faction.glyph }}</div>
+        <article class="card faction-card">
+          <span class="faction-glyph" aria-hidden="true">{{ faction.glyph }}</span>
           <div>
-            <div class="faction-name">{{ faction.name }}</div>
-            <div class="faction-desc">{{ faction.description }}</div>
+            <h3 class="faction-name">{{ faction.name }}</h3>
+            <p class="faction-desc">{{ faction.description }}</p>
           </div>
-        </div>
+        </article>
         {% endfor %}
       </div>
-    </div>
-    {% endif %}
-  </div>
+    </section>
+  {% endif %}
 
   {% if landing.quote_text %}
-  <div class="quote page">
+  <section class="section quote-block">
     <blockquote>
       {{ landing.quote_text }}
     </blockquote>
     {% if landing.quote_cite %}
     <cite>{{ landing.quote_cite }}</cite>
     {% endif %}
-  </div>
+  </section>
   {% endif %}
 
-  <div class="cta page">
-    {% if landing.cta_title %}
-    <p class="cta-title">{{ landing.cta_title }}</p>
-    {% endif %}
-    {% if landing.cta_text %}
-    <p class="cta-text">{{ landing.cta_text }}</p>
-    {% endif %}
-    <div class="price"><sup>{{ event.currency|currency_symbol }}</sup>{{ event.price_amount|floatformat:0 }}</div>
-    <a href="{% url 'applications:apply' %}" class="btn">{{ landing.cta_button }}</a>
-  </div>
+  <section class="section cta-section--bottom">
+    <a href="{% url 'applications:apply' %}" class="button button--primary button--lg">{{ landing.cta_button }}</a>
+  </section>
 
   </main>
+  </div>
+
+  <script src="{% static 'js/theme-toggle.js' %}" defer></script>
 </body>
 
 </html>

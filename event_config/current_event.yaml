@@ -20,7 +20,7 @@ landing:
     - label: "תאריך"
       value: "09 באפריל 2026"
     - label: "שעות"
-      value: "18:00–23:00"
+      value: "18:00 - 23:00"
     - label: "מיקום"
       value: "דיזנגוף סנטר, תל אביב"
   divider_label: "הסיעות"

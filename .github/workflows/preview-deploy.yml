@@ -60,11 +60,10 @@ jobs:
           docker tag "${IMAGE}:latest" "${IMAGE}:pre-preview" 2>/dev/null || true
           docker push "${IMAGE}:pre-preview" 2>/dev/null || true
 
-          # Build and push preview
+          # Build and push preview (do NOT overwrite :latest — keep it for production)
           PREVIEW_TAG="preview-${GITHUB_SHA::8}"
-          docker build -f ops/Dockerfile -t "${IMAGE}:${PREVIEW_TAG}" -t "${IMAGE}:latest" .
+          docker build -f ops/Dockerfile -t "${IMAGE}:${PREVIEW_TAG}" .
           docker push "${IMAGE}:${PREVIEW_TAG}"
-          docker push "${IMAGE}:latest"
 
           # Deploy to droplet
           mkdir -p ~/.ssh
@@ -72,6 +71,7 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H "${DEPLOY_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
 
+          # Unquoted heredoc (<<REMOTE) so ${PREVIEW_TAG} expands locally before SSH
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key "root@${DEPLOY_HOST}" bash <<REMOTE
             cd /opt/center-larp
             echo "${{ secrets.DO_API_TOKEN }}" | docker login registry.digitalocean.com -u _ --password-stdin 2>/dev/null
